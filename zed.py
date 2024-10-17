@@ -11,13 +11,6 @@ from cv_bridge import CvBridge
 
 # Funktion zur Berechnung des Fahrschlauchs basierend auf dem Lenkwinkel
 def calculate_roi_based_on_steering(angle, image_width, image_height):
-    """
-    Berechnet den ROI basierend auf dem Lenkwinkel der Räder.
-    :param angle: Lenkwinkel (in Grad)
-    :param image_width: Breite des Bildes (in Pixeln)
-    :param image_height: Höhe des Bildes (in Pixeln)
-    :return: Koordinaten (x_min, y_min, x_max, y_max) des ROI
-    """
     roi_width = int(image_width / (1 + abs(angle) / 10))  # Verengung des Fahrschlauchs basierend auf dem Lenkwinkel
     roi_height = int(image_height / 3)  # Begrenze die Höhe des ROI
 
@@ -29,20 +22,8 @@ def calculate_roi_based_on_steering(angle, image_width, image_height):
     return x_min, y_min, x_max, y_max
 
 
-# Maximaler Einschlagwinkel der Räder (in Grad)
-MAX_STEERING_ANGLE = 30.0  # Beispiel: ±30 Grad
-
-# Maximaler absoluter Steuerwert (abhängig von deinem Fahrzeug)
-MAX_STEERING_VALUE = 100.0  # Beispiel: ±100
-
-
 # Funktion zur Berechnung des Lenkwinkels
 def calculate_steering_angle(steering_value):
-    """
-    Berechnet den Lenkwinkel basierend auf dem Steuerwert.
-    :param steering_value: Der absolute Steuerwert (kommt vom ROS-Topic)
-    :return: Lenkwinkel (in Grad)
-    """
     # Berechne den relativen Winkel basierend auf dem Maximalwert
     return (steering_value / MAX_STEERING_VALUE) * MAX_STEERING_ANGLE
 
@@ -122,6 +103,11 @@ def object_callback(msg):
 
 
 def main():
+    # Maximaler Einschlagwinkel der Räder (in Grad)
+    MAX_STEERING_ANGLE = 30.0  # Beispiel: ±30 Grad
+
+    # Maximaler absoluter Steuerwert (abhängig von deinem Fahrzeug)
+    MAX_STEERING_VALUE = 100.0  # Beispiel: ±100
     # Brücke zwischen ROS und OpenCV
     bridge = CvBridge()
     # Initialisiere den ROS-Knoten
