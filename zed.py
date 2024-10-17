@@ -37,6 +37,9 @@ def calculate_speed_from_depth(depth_image):
 
 # Function to calculate the distance to the nearest object
 def calculate_distance_to_nearest_object(depth_image):
+    # Ensure the depth image is single-channel
+    if len(depth_image.shape) > 2:
+        depth_image = cv2.cvtColor(depth_image, cv2.COLOR_BGR2GRAY)
     min_depth = cv2.minMaxLoc(depth_image)[0]
     return min_depth
 
@@ -84,12 +87,10 @@ def image_callback(msg):
 
         # Calculate speed from depth image
         speed = calculate_speed_from_depth(frame)
-        print("Geschwindigkeit: {:.2f} m/s".format(speed))
         rospy.loginfo("Geschwindigkeit: {:.2f} m/s".format(speed))
 
         # Calculate distance to the nearest object
         distance = calculate_distance_to_nearest_object(frame)
-        print("Distanz zum nächsten Objekt: {:.2f} m".format(distance))
         rospy.loginfo("Distanz zum nächsten Objekt: {:.2f} m".format(distance))
 
         cv2.imshow("ZED Camera with Fahrschlauch and ROI", frame_with_fahrschlauch_and_roi)
