@@ -15,7 +15,6 @@ prev_time = None
 bridge = CvBridge()
 steering_angle = 0.0  # Initialisiere den Lenkwinkel
 current_speed = 0.0  # Aktuelle Geschwindigkeit
-rgb_image = None  # Speichert das RGB-Bild
 
 
 # Funktion zur Berechnung des Lenkwinkels
@@ -31,7 +30,7 @@ def steering_callback(msg):
 
 
 # Funktion, um den Fahrschlauch zu zeichnen
-def draw_fahrschlauch(image, angle, image_width, image_height):
+def draw_fahrschlauch(angle, image_width, image_height):
     center_x = image_width // 2
     y_min = image_height // 2  # Fahrschlauch beginnt in der Mitte
     y_max = image_height  # Fahrschlauch endet unten
@@ -78,10 +77,7 @@ def calculate_speed(current_distance):
 
 # Callback für Tiefenbild
 def depth_callback(msg):
-    global steering_angle, rgb_image
-
-    if rgb_image is None:
-        return  # Warten bis RGB-Bild verfügbar ist
+    global steering_angle
 
     try:
         depth_image = bridge.imgmsg_to_cv2(msg, "32FC1")
@@ -95,7 +91,7 @@ def depth_callback(msg):
     height, width = depth_image.shape
 
     # Bestimme den ROI
-    roi = draw_fahrschlauch(rgb_image.copy(), steering_angle, width, height)
+    roi = draw_fahrschlauch(steering_angle, width, height)
 
     # Berechne die Distanz zum nächsten Objekt im Fahrschlauch
     min_distance = calculate_distance_in_roi(depth_image, roi)
