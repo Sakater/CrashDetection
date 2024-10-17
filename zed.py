@@ -103,13 +103,8 @@ def object_callback(msg):
 
 
 def main():
-    # Maximaler Einschlagwinkel der Räder (in Grad)
-    MAX_STEERING_ANGLE = 30.0  # Beispiel: ±30 Grad
 
-    # Maximaler absoluter Steuerwert (abhängig von deinem Fahrzeug)
-    MAX_STEERING_VALUE = 100.0  # Beispiel: ±100
-    # Brücke zwischen ROS und OpenCV
-    bridge = CvBridge()
+
     # Initialisiere den ROS-Knoten
     rospy.init_node('zed_fahrschlauch_analyse', anonymous=True)
 
@@ -135,4 +130,11 @@ def main():
 
 
 if __name__ == "__main__":
+    # Maximaler Einschlagwinkel der Räder (in Grad)
+    MAX_STEERING_ANGLE = 30.0  # Beispiel: ±30 Grad
+
+    # Maximaler absoluter Steuerwert (abhängig von deinem Fahrzeug)
+    MAX_STEERING_VALUE = 100.0  # Beispiel: ±100
+    # Brücke zwischen ROS und OpenCV
+    bridge = CvBridge()
     main()
