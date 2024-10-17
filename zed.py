@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 from sensor_msgs.msg import Image
 from std_msgs.msg import Float32
-from cv_bridge import CvBridge
+from cv_bridge import CvBridge, CvBridgeError
 import time
 
 # Konstanten
@@ -17,15 +17,18 @@ steering_angle = 0.0  # Initialisiere den Lenkwinkel
 current_speed = 0.0  # Aktuelle Geschwindigkeit
 rgb_image = None  # Speichert das RGB-Bild
 
+
 # Funktion zur Berechnung des Lenkwinkels
 def calculate_steering_angle(steering_value):
     return (steering_value / MAX_STEERING_VALUE) * MAX_STEERING_ANGLE
+
 
 # Callback für den Lenkwert
 def steering_callback(msg):
     global steering_angle
     steering_angle = calculate_steering_angle(msg.data)
     rospy.loginfo(f"Lenkwinkel: {steering_angle:.2f} Grad")
+
 
 # Funktion, um den Fahrschlauch zu zeichnen
 def draw_fahrschlauch(image, angle, image_width, image_height):
@@ -41,6 +44,7 @@ def draw_fahrschlauch(image, angle, image_width, image_height):
 
     return image, (center_x - offset, center_x + offset, y_min, y_max)
 
+
 # Funktion zur Distanzberechnung
 def calculate_distance_in_roi(depth_image, roi):
     x_min, x_max, y_min, y_max = roi
@@ -49,6 +53,7 @@ def calculate_distance_in_roi(depth_image, roi):
     # Finde den minimalen Wert (nächster Punkt) innerhalb des Fahrschlauchs
     min_distance = np.nanmin(roi_depth)
     return min_distance
+
 
 # Geschwindigkeit basierend auf Distanzänderung berechnen
 def calculate_speed(current_distance):
@@ -74,6 +79,7 @@ def calculate_speed(current_distance):
 
     return current_speed
 
+
 # Callback für Tiefenbild
 def depth_callback(msg):
     global steering_angle, rgb_image
@@ -81,8 +87,12 @@ def depth_callback(msg):
     if rgb_image is None:
         return  # Warten bis RGB-Bild verfügbar ist
 
-    # Konvertiere ROS-Bild zu OpenCV-Format
-    depth_image = bridge.imgmsg_to_cv2(msg, "32FC1")
+    try:
+        depth_image = bridge.imgmsg_to_cv2(msg, "32FC1")
+    except CvBridgeError as e:
+        rospy.logerr(f"Failed to convert depth image: {e}")
+        return
+
     depth_image = np.nan_to_num(depth_image, nan=np.inf)  # Entferne NaN-Werte
 
     # Bildgröße
@@ -100,18 +110,30 @@ def depth_callback(msg):
     rospy.loginfo(f"Aktuelle Geschwindigkeit: {speed:.2f} m/s")
 
     # Zeige die Distanz und Geschwindigkeit auf dem Bild an
-    cv2.putText(image_with_fahrschlauch, f"Distanz: {min_distance:.2f} m", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-    cv2.putText(image_with_fahrschlauch, f"Geschwindigkeit: {speed:.2f} m/s", (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+    cv2.putText(image_with_fahrschlauch, f"Distanz: {min_distance:.2f} m", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1,
+                (255, 255, 255), 2)
+    cv2.putText(image_with_fahrschlauch, f"Geschwindigkeit: {speed:.2f} m/s", (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 1,
+                (255, 255, 255), 2)
+
+    # Erstelle ein benanntes Fenster mit der Option, die Größe zu ändern
+    cv2.namedWindow("ZED Camera RGB with Fahrschlauch", cv2.WINDOW_NORMAL)
+
+    # Setze die Größe des Fensters (Breite, Höhe)
+    cv2.resizeWindow("ZED Camera RGB with Fahrschlauch", 800, 600)
 
     # Zeige das Bild an
     cv2.imshow("ZED Camera RGB with Fahrschlauch", image_with_fahrschlauch)
     cv2.waitKey(1)
 
+
 # Callback für RGB-Bild
 def rgb_callback(msg):
     global rgb_image
-    # Konvertiere ROS-Bild zu OpenCV-Format
-    rgb_image = bridge.imgmsg_to_cv2(msg, "bgr8")
+    try:
+        rgb_image = bridge.imgmsg_to_cv2(msg, "bgr8")
+    except CvBridgeError as e:
+        rospy.logerr(f"Failed to convert RGB image: {e}")
+
 
 def main():
     rospy.init_node('zed_fahrschlauch_viewer', anonymous=True)
@@ -127,6 +149,7 @@ def main():
 
     # ROS am Laufen halten
     rospy.spin()
+
 
 if __name__ == "__main__":
     main()
