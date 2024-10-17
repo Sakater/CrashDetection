@@ -6,8 +6,7 @@ import cv2
 import numpy as np
 from cv_bridge import CvBridge
 
-# Brücke zwischen ROS und OpenCV
-bridge = CvBridge()
+
 
 
 # Funktion zur Berechnung des Fahrschlauchs basierend auf dem Lenkwinkel
@@ -123,6 +122,8 @@ def object_callback(msg):
 
 
 def main():
+    # Brücke zwischen ROS und OpenCV
+    bridge = CvBridge()
     # Initialisiere den ROS-Knoten
     rospy.init_node('zed_fahrschlauch_analyse', anonymous=True)
 
