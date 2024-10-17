@@ -1,6 +1,6 @@
 import cv2
 import rospy
-from cv_bridge import CvBridge
+from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image
 from std_msgs.msg import Float32
 
@@ -56,14 +56,23 @@ def draw_fahrschlauch_and_roi(image, angle, image_width, image_height):
 def image_callback(msg):
     global steering_angle
 
-    frame = bridge.imgmsg_to_cv2(msg, "bgr8")
+    try:
+        # Check the encoding of the image
+        if msg.encoding == "32FC1":
+            frame = bridge.imgmsg_to_cv2(msg, "32FC1")
+            frame = cv2.normalize(frame, None, 0, 255, cv2.NORM_MINMAX)
+            frame = cv2.cvtColor(frame.astype('uint8'), cv2.COLOR_GRAY2BGR)
+        else:
+            frame = bridge.imgmsg_to_cv2(msg, "bgr8")
 
-    height, width, _ = frame.shape
+        height, width, _ = frame.shape
 
-    frame_with_fahrschlauch_and_roi = draw_fahrschlauch_and_roi(frame, steering_angle, width, height)
+        frame_with_fahrschlauch_and_roi = draw_fahrschlauch_and_roi(frame, steering_angle, width, height)
 
-    cv2.imshow("ZED Camera with Fahrschlauch and ROI", frame_with_fahrschlauch_and_roi)
-    cv2.waitKey(1)
+        cv2.imshow("ZED Camera with Fahrschlauch and ROI", frame_with_fahrschlauch_and_roi)
+        cv2.waitKey(1)
+    except CvBridgeError as e:
+        rospy.logerr("CvBridge Error: {}".format(e))
 
 def main():
     global steering_angle
