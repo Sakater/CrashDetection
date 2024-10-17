@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import cv2
 import rospy
 from cv_bridge import CvBridge, CvBridgeError
