@@ -1,123 +1,74 @@
-# -*- coding: utf-8 -*-
 import rospy
-import cv2
-import numpy as np
 from sensor_msgs.msg import Image
 from std_msgs.msg import Float32
-from cv_bridge import CvBridge, CvBridgeError
+import cv2
+import numpy as np
+from cv_bridge import CvBridge
 import time
 
-# Konstanten
-MAX_STEERING_ANGLE = 30.0  # Maximaler Lenkwinkel in Grad
-MAX_STEERING_VALUE = 100.0  # Maximale Lenkwert (absolut)
-prev_distance = None
-prev_time = None
+# Brücke zwischen ROS und OpenCV
 bridge = CvBridge()
-steering_angle = 0.0  # Initialisiere den Lenkwinkel
-current_speed = 0.0  # Aktuelle Geschwindigkeit
 
+# Global variables to store the steering angle and previous depth data
+steering_angle = 90  # Default value for straight
+previous_depth_image = None
+previous_time = None
 
-# Funktion zur Berechnung des Lenkwinkels
-def calculate_steering_angle(steering_value):
-    return (steering_value / MAX_STEERING_VALUE) * MAX_STEERING_ANGLE
+# Funktion zur Berechnung des Fahrschlauchs basierend auf dem Lenkwinkel
+def calculate_roi_based_on_steering(angle, image_width, image_height):
+    roi_width = int(image_width / (1 + abs(angle - 90) / 10))
+    roi_height = int(image_height / 3)
+    x_min = int((image_width - roi_width) / 2)
+    x_max = x_min + roi_width
+    y_min = int(image_height / 2)
+    y_max = y_min + roi_height
+    return x_min, y_min, x_max, y_max
 
-
-# Callback für den Lenkwert
-def steering_callback(msg):
-    global steering_angle
-    steering_angle = calculate_steering_angle(msg.data)
-    rospy.loginfo("Lenkwinkel: {:.2f} Grad".format(steering_angle))
-
-
-# Funktion, um den Fahrschlauch zu zeichnen
-def draw_fahrschlauch(angle, image_width, image_height):
-    center_x = image_width // 2
-    y_min = image_height // 2  # Fahrschlauch beginnt in der Mitte
-    y_max = image_height  # Fahrschlauch endet unten
-
-    offset = int(angle / MAX_STEERING_ANGLE * center_x)
-
-    return (center_x - offset, center_x + offset, y_min, y_max)
-
-
-# Funktion zur Distanzberechnung
-def calculate_distance_in_roi(depth_image, roi):
-    x_min, x_max, y_min, y_max = roi
-    roi_depth = depth_image[y_min:y_max, x_min:x_max]
-
-    # Finde den minimalen Wert (nächster Punkt) innerhalb des Fahrschlauchs
-    min_distance = np.nanmin(roi_depth)
-    return min_distance
-
-
-# Geschwindigkeit basierend auf Distanzänderung berechnen
-def calculate_speed(current_distance):
-    global prev_distance, prev_time, current_speed
-
-    current_time = time.time()
-
-    if prev_distance is None or prev_time is None:
-        prev_distance = current_distance
-        prev_time = current_time
-        return 0.0  # Initial keine Geschwindigkeit
-
-    delta_distance = prev_distance - current_distance
-    delta_time = current_time - prev_time
-
-    # Geschwindigkeit = Distanzänderung / Zeit
-    if delta_time > 0:
-        current_speed = delta_distance / delta_time
-
-    # Aktualisiere vorherige Werte
-    prev_distance = current_distance
-    prev_time = current_time
-
-    return current_speed
-
-
-# Callback für Tiefenbild
+# Callback-Funktion für das Abonnieren der Tiefendaten
 def depth_callback(msg):
-    global steering_angle
+    global previous_depth_image, previous_time, steering_angle
 
     try:
-        depth_image = bridge.imgmsg_to_cv2(msg, "32FC1")
-    except CvBridgeError as e:
-        rospy.logerr("Failed to convert depth image: {}".format(e))
-        return
+        # Konvertiere ROS Image Message in OpenCV Bild
+        depth_image = bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
+        current_time = time.time()
 
-    depth_image = np.nan_to_num(depth_image, nan=np.inf)  # Entferne NaN-Werte
+        if previous_depth_image is not None and previous_time is not None:
+            # Bilde den Fahrschlauch (ROI) basierend auf dem Lenkwinkel
+            image_height, image_width = depth_image.shape
+            x_min, y_min, x_max, y_max = calculate_roi_based_on_steering(steering_angle, image_width, image_height)
 
-    # Bildgröße
-    height, width = depth_image.shape
+            # Berechne die Geschwindigkeit
+            for x in range(x_min, x_max):
+                for y in range(y_min, y_max):
+                    current_distance = depth_image[y, x]
+                    previous_distance = previous_depth_image[y, x]
+                    if current_distance > 0 and previous_distance > 0:
+                        distance_change = current_distance - previous_distance
+                        time_change = current_time - previous_time
+                        if time_change > 0:
+                            speed = distance_change / time_change
+                            print("Geschwindigkeit bei ({}, {}): {} Meter/Sekunde".format(x, y, speed))
 
-    # Bestimme den ROI
-    roi = draw_fahrschlauch(steering_angle, width, height)
+                    print("Momentane Distanz: {}".format(current_distance))
 
-    # Berechne die Distanz zum nächsten Objekt im Fahrschlauch
-    min_distance = calculate_distance_in_roi(depth_image, roi)
-    rospy.loginfo("Nächste Distanz im Fahrschlauch: {:.2f} m".format(min_distance))
+        # Speichere die aktuellen Tiefendaten und den Zeitstempel
+        previous_depth_image = depth_image.copy()
+        previous_time = current_time
 
-    # Berechne die aktuelle Geschwindigkeit
-    speed = calculate_speed(min_distance)
-    rospy.loginfo("Aktuelle Geschwindigkeit: {:.2f} m/s".format(speed))
+    except Exception as e:
+        rospy.logerr("Fehler beim Verarbeiten der Tiefendaten: {}".format(e))
 
-    # Print the distance and speed
-    print("Distanz: {:.2f} m".format(min_distance))
-    print("Geschwindigkeit: {:.2f} m/s".format(speed))
-
+# Callback-Funktion für das Abonnieren der Lenkungsdaten
+def steering_callback(msg):
+    global steering_angle
+    steering_angle = msg.data
 
 def main():
-    rospy.init_node('zed_fahrschlauch_viewer', anonymous=True)
-
-    # Abonniere das Steuerungs-Topic für den Lenkwinkel
-    rospy.Subscriber("/ctrlcmd_steering", Float32, steering_callback)
-
-    # Abonniere das Tiefenbild-Topic der ZED-Kamera
+    rospy.init_node('zed_fahrschlauch_analyse', anonymous=True)
     rospy.Subscriber("/zed2/zed_node/depth/depth_registered", Image, depth_callback)
-
-    # ROS am Laufen halten
+    rospy.Subscriber("/ctrlcmd_steering", Float32, steering_callback)
     rospy.spin()
-
 
 if __name__ == "__main__":
     main()
