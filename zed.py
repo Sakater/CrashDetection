@@ -136,7 +136,8 @@ def rgb_callback(msg):
         rgb_image = bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
     except CvBridgeError as e:
         rospy.logerr("Failed to convert RGB image: {}".format(e))
-
+    except UnicodeDecodeError as e:
+        rospy.logerr("Unicode decode error: {}".format(e))
 
 def main():
     rospy.init_node('zed_fahrschlauch_viewer', anonymous=True)
