@@ -27,7 +27,7 @@ def calculate_steering_angle(steering_value):
 def steering_callback(msg):
     global steering_angle
     steering_angle = calculate_steering_angle(msg.data)
-    rospy.loginfo(f"Lenkwinkel: {steering_angle:.2f} Grad")
+    rospy.loginfo("Lenkwinkel: {:.2f} Grad".format(steering_angle))
 
 
 # Funktion, um den Fahrschlauch zu zeichnen
@@ -90,7 +90,7 @@ def depth_callback(msg):
     try:
         depth_image = bridge.imgmsg_to_cv2(msg, "32FC1")
     except CvBridgeError as e:
-        rospy.logerr(f"Failed to convert depth image: {e}")
+        rospy.logerr("Failed to convert depth image: {}".format(e))
         return
 
     depth_image = np.nan_to_num(depth_image, nan=np.inf)  # Entferne NaN-Werte
@@ -103,16 +103,16 @@ def depth_callback(msg):
 
     # Berechne die Distanz zum nächsten Objekt im Fahrschlauch
     min_distance = calculate_distance_in_roi(depth_image, roi)
-    rospy.loginfo(f"Nächste Distanz im Fahrschlauch: {min_distance:.2f} m")
+    rospy.loginfo("Nächste Distanz im Fahrschlauch: {:.2f} m".format(min_distance))
 
     # Berechne die aktuelle Geschwindigkeit
     speed = calculate_speed(min_distance)
-    rospy.loginfo(f"Aktuelle Geschwindigkeit: {speed:.2f} m/s")
+    rospy.loginfo("Aktuelle Geschwindigkeit: {:.2f} m/s".format(speed))
 
     # Zeige die Distanz und Geschwindigkeit auf dem Bild an
-    cv2.putText(image_with_fahrschlauch, f"Distanz: {min_distance:.2f} m", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1,
+    cv2.putText(image_with_fahrschlauch, "Distanz: {:.2f} m".format(min_distance), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1,
                 (255, 255, 255), 2)
-    cv2.putText(image_with_fahrschlauch, f"Geschwindigkeit: {speed:.2f} m/s", (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 1,
+    cv2.putText(image_with_fahrschlauch, "Geschwindigkeit: {:.2f} m/s".format(speed), (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 1,
                 (255, 255, 255), 2)
 
     # Erstelle ein benanntes Fenster mit der Option, die Größe zu ändern
@@ -132,7 +132,7 @@ def rgb_callback(msg):
     try:
         rgb_image = bridge.imgmsg_to_cv2(msg, "bgr8")
     except CvBridgeError as e:
-        rospy.logerr(f"Failed to convert RGB image: {e}")
+        rospy.logerr("Failed to convert RGB image: {}".format(e))
 
 
 def main():
