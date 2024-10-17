@@ -110,9 +110,11 @@ def depth_callback(msg):
     rospy.loginfo("Aktuelle Geschwindigkeit: {:.2f} m/s".format(speed))
 
     # Zeige die Distanz und Geschwindigkeit auf dem Bild an
-    cv2.putText(image_with_fahrschlauch, "Distanz: {:.2f} m".format(min_distance), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1,
+    cv2.putText(image_with_fahrschlauch, "Distanz: {:.2f} m".format(min_distance), (10, 30), cv2.FONT_HERSHEY_SIMPLEX,
+                1,
                 (255, 255, 255), 2)
-    cv2.putText(image_with_fahrschlauch, "Geschwindigkeit: {:.2f} m/s".format(speed), (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 1,
+    cv2.putText(image_with_fahrschlauch, "Geschwindigkeit: {:.2f} m/s".format(speed), (10, 70),
+                cv2.FONT_HERSHEY_SIMPLEX, 1,
                 (255, 255, 255), 2)
 
     # Erstelle ein benanntes Fenster mit der Option, die Größe zu ändern
@@ -126,11 +128,12 @@ def depth_callback(msg):
     cv2.waitKey(1)
 
 
-# Callback für RGB-Bild
+# Callback for RGB image
 def rgb_callback(msg):
     global rgb_image
     try:
-        rgb_image = bridge.imgmsg_to_cv2(msg, "bgr8")
+        # Ensure the image data is decoded correctly
+        rgb_image = bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
     except CvBridgeError as e:
         rospy.logerr("Failed to convert RGB image: {}".format(e))
 
