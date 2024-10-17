@@ -38,11 +38,7 @@ def draw_fahrschlauch(image, angle, image_width, image_height):
 
     offset = int(angle / MAX_STEERING_ANGLE * center_x)
 
-    # Zeichne Fahrschlauch
-    cv2.line(image, (center_x - offset, y_min), (center_x - offset, y_max), (0, 255, 0), 3)
-    cv2.line(image, (center_x + offset, y_min), (center_x + offset, y_max), (0, 255, 0), 3)
-
-    return image, (center_x - offset, center_x + offset, y_min, y_max)
+    return (center_x - offset, center_x + offset, y_min, y_max)
 
 
 # Funktion zur Distanzberechnung
@@ -98,8 +94,8 @@ def depth_callback(msg):
     # Bildgröße
     height, width = depth_image.shape
 
-    # Zeichne den Fahrschlauch auf das RGB-Bild und bestimme den ROI
-    image_with_fahrschlauch, roi = draw_fahrschlauch(rgb_image.copy(), steering_angle, width, height)
+    # Bestimme den ROI
+    roi = draw_fahrschlauch(rgb_image.copy(), steering_angle, width, height)
 
     # Berechne die Distanz zum nächsten Objekt im Fahrschlauch
     min_distance = calculate_distance_in_roi(depth_image, roi)
@@ -109,23 +105,9 @@ def depth_callback(msg):
     speed = calculate_speed(min_distance)
     rospy.loginfo("Aktuelle Geschwindigkeit: {:.2f} m/s".format(speed))
 
-    # Zeige die Distanz und Geschwindigkeit auf dem Bild an
-    cv2.putText(image_with_fahrschlauch, "Distanz: {:.2f} m".format(min_distance), (10, 30), cv2.FONT_HERSHEY_SIMPLEX,
-                1,
-                (255, 255, 255), 2)
-    cv2.putText(image_with_fahrschlauch, "Geschwindigkeit: {:.2f} m/s".format(speed), (10, 70),
-                cv2.FONT_HERSHEY_SIMPLEX, 1,
-                (255, 255, 255), 2)
-
-    # Erstelle ein benanntes Fenster mit der Option, die Größe zu ändern
-    cv2.namedWindow("ZED Camera RGB with Fahrschlauch", cv2.WINDOW_NORMAL)
-
-    # Setze die Größe des Fensters (Breite, Höhe)
-    cv2.resizeWindow("ZED Camera RGB with Fahrschlauch", 800, 600)
-
-    # Zeige das Bild an
-    cv2.imshow("ZED Camera RGB with Fahrschlauch", image_with_fahrschlauch)
-    cv2.waitKey(1)
+    # Print the distance and speed
+    print("Distanz: {:.2f} m".format(min_distance))
+    print("Geschwindigkeit: {:.2f} m/s".format(speed))
 
 
 # Callback for RGB image
