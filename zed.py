@@ -27,6 +27,18 @@ def calculate_roi_based_on_steering(angle, image_width, image_height):
 def calculate_steering_angle(steering_value):
     return (steering_value / MAX_STEERING_VALUE) * MAX_STEERING_ANGLE
 
+# Function to calculate speed from depth image
+def calculate_speed_from_depth(depth_image):
+    # Example calculation: average depth value in the image
+    avg_depth = cv2.mean(depth_image)[0]
+    speed = avg_depth / 10.0  # Example conversion factor
+    return speed
+
+# Function to calculate the distance to the nearest object
+def calculate_distance_to_nearest_object(depth_image):
+    min_depth = cv2.minMaxLoc(depth_image)[0]
+    return min_depth
+
 # Callback function for the steering value
 def steering_callback(msg):
     global steering_angle
@@ -68,6 +80,16 @@ def image_callback(msg):
         height, width, _ = frame.shape
 
         frame_with_fahrschlauch_and_roi = draw_fahrschlauch_and_roi(frame, steering_angle, width, height)
+
+        # Calculate speed from depth image
+        speed = calculate_speed_from_depth(frame)
+        print("Geschwindigkeit: {:.2f} m/s".format(speed))
+        rospy.loginfo("Geschwindigkeit: {:.2f} m/s".format(speed))
+
+        # Calculate distance to the nearest object
+        distance = calculate_distance_to_nearest_object(frame)
+        print("Distanz zum nächsten Objekt: {:.2f} m".format(distance))
+        rospy.loginfo("Distanz zum nächsten Objekt: {:.2f} m".format(distance))
 
         cv2.imshow("ZED Camera with Fahrschlauch and ROI", frame_with_fahrschlauch_and_roi)
         cv2.waitKey(1)
