@@ -19,9 +19,12 @@ def image_callback(msg):
     global image
     try:
         # Convert the ROS Image message to a NumPy array
-        image = bridge.imgmsg_to_cv2(msg, "bgr8")
+        image = np.frombuffer(msg.data, dtype=np.uint8).reshape(msg.height, msg.width, -1)
+        image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     except CvBridgeError as e:
         rospy.logerr("CvBridge Error: {0}".format(e))
+    except Exception as e:
+        rospy.logerr("Error: {0}".format(e))
 
 # Subscriber for the image
 image_sub = rospy.Subscriber('/zed2/zed_node/right_raw/image_raw_color', Image, image_callback)
