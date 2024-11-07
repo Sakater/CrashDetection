@@ -2,7 +2,7 @@
 import rospy
 import cv2
 from sensor_msgs.msg import Image
-from cv_bridge import CvBridge
+from cv_bridge import CvBridge, CvBridgeError
 import numpy as np
 
 # Initialize the ROS node
@@ -17,7 +17,11 @@ image = None
 # Callback for the image topic
 def image_callback(msg):
     global image
-    image = bridge.imgmsg_to_cv2(msg, "bgr8")
+    try:
+        # Convert the ROS Image message to a NumPy array
+        image = bridge.imgmsg_to_cv2(msg, "bgr8")
+    except CvBridgeError as e:
+        rospy.logerr("CvBridge Error: {0}".format(e))
 
 # Subscriber for the image
 image_sub = rospy.Subscriber('/zed2/zed_node/right_raw/image_raw_color', Image, image_callback)
