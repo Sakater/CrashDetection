@@ -20,7 +20,7 @@ def depth_callback(msg):
     depth_image = bridge.imgmsg_to_cv2(msg, desired_encoding="32FC1")
 
 # Subscriber für das Tiefenbild
-depth_sub = rospy.Subscriber('/zed2/zed_node/depth/depth_registered', Image, depth_callback)
+depth_sub = rospy.Subscriber('/zed2/zed_node/right_raw/image_raw_color', Image, depth_callback)
 
 # Setze das Fenster auf WINDOW_NORMAL
 cv2.namedWindow("ZED2 Depth", cv2.WINDOW_NORMAL)
