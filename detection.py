@@ -20,6 +20,7 @@ previous_depth_image = None
 previous_time = None
 image = None
 
+
 # Callback-Funktion für das Abonnieren der Bilddaten
 def image_callback(msg):
     global image
@@ -31,6 +32,7 @@ def image_callback(msg):
         rospy.logerr("CvBridge Error: {0}".format(e))
     except Exception as e:
         rospy.logerr("Error: {0}".format(e))
+
 
 # Callback-Funktion für das Abonnieren der Tiefendaten
 def depth_callback(msg):
@@ -45,7 +47,7 @@ def depth_callback(msg):
             # Bilde den Fahrschlauch (ROI) basierend auf dem Lenkwinkel
             image_height, image_width = depth_image.shape
             x_min, y_min, x_max, y_max = calculate_roi_based_on_steering(steering_angle_average,
-                                                                         image_width, image_height)
+                                                                         image_width, image_height, depth_image)
 
             # Berechne die Geschwindigkeit
             for x in range(x_min, x_max):
@@ -68,6 +70,7 @@ def depth_callback(msg):
     except Exception as e:
         rospy.logerr("Fehler beim Verarbeiten der Tiefendaten: {}".format(e))
 
+
 # Callback-Funktion für das Abonnieren der Lenkungsdaten
 def steering_callback(msg):
     global steering_angle_average, steering_angles
@@ -76,15 +79,22 @@ def steering_callback(msg):
         steering_angles.pop(0)
     steering_angle_average = sum(steering_angles) / len(steering_angles)
 
-# Funktion zur Berechnung des Fahrschlauchs basierend auf dem Lenkwinkel
-def calculate_roi_based_on_steering(angle, image_width, image_height):
-    roi_width = int(image_width / (1 + abs(angle - 90) / 10))
-    roi_height = int(image_height / 3)
+
+# Funktion zur Berechnung des Fahrschlauchs basierend auf dem Lenkwinkel und der Distanz
+def calculate_roi_based_on_steering(angle, image_width, image_height, depth_image):
+    # Berechne die durchschnittliche Distanz im Bild
+    avg_distance = np.mean(depth_image[depth_image > 0])
+
+    # Passe die ROI-Größe basierend auf der Distanz an
+    roi_width = int(image_width / (1 + abs(angle - 90) / 10) * (1 / avg_distance))
+    roi_height = int(image_height / 3 * (1 / avg_distance))
+
     x_min = int((image_width - roi_width) / 2)
     x_max = x_min + roi_width
     y_min = int(image_height / 2)
     y_max = y_min + roi_height
     return x_min, y_min, x_max, y_max
+
 
 def main():
     rospy.init_node('zed_fahrschlauch_analyse', anonymous=True)
@@ -96,9 +106,10 @@ def main():
 
     while not rospy.is_shutdown():
         if image is not None:
-            # Berechne den ROI basierend auf dem Lenkwinkel
+            # Berechne den ROI basierend auf dem Lenkwinkel und der Distanz
             image_height, image_width, _ = image.shape
-            x_min, y_min, x_max, y_max = calculate_roi_based_on_steering(steering_angle_average, image_width, image_height)
+            x_min, y_min, x_max, y_max = calculate_roi_based_on_steering(steering_angle_average, image_width,
+                                                                         image_height, previous_depth_image)
 
             # Zeichne den ROI auf das Bild
             cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
@@ -112,6 +123,7 @@ def main():
 
     cv2.destroyAllWindows()
     rospy.spin()
+
 
 if __name__ == "__main__":
     main()
