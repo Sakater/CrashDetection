@@ -81,6 +81,7 @@ def steering_callback(msg):
 
 
 def angle_callback():
+    #TODO: abs(average-90) verwenden anstatt max left etc
     global steering_average, steering_max_left, steering_max_right, max_angle
     return (max_angle / (steering_max_left - 87) * steering_average)
 

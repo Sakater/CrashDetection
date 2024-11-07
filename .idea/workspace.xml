@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="909f2697-1cc2-45fd-99a7-e09e24ebada9" name="Changes" comment="-roi update 3">
+    <list default="true" id="909f2697-1cc2-45fd-99a7-e09e24ebada9" name="Changes" comment="-roi update 3.1">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/detection.py" beforeDir="false" afterPath="$PROJECT_DIR$/detection.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -80,7 +81,7 @@
       <workItem from="1729107570613" duration="11487000" />
       <workItem from="1729166842334" duration="6270000" />
       <workItem from="1729765807558" duration="6768000" />
-      <workItem from="1730979185932" duration="7162000" />
+      <workItem from="1730979185932" duration="8138000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />
@@ -394,7 +395,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730987964003</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="-roi update 3.1">
+      <option name="closed" value="true" />
+      <created>1730988079872</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1730988079872</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -412,7 +421,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="update6" />
     <MESSAGE value="update7" />
     <MESSAGE value="update8" />
     <MESSAGE value="update8.1" />
@@ -437,6 +445,7 @@
     <MESSAGE value="-roi gezeichnet" />
     <MESSAGE value="-roi update" />
     <MESSAGE value="-roi update 3" />
-    <option name="LAST_COMMIT_MESSAGE" value="-roi update 3" />
+    <MESSAGE value="-roi update 3.1" />
+    <option name="LAST_COMMIT_MESSAGE" value="-roi update 3.1" />
   </component>
 </project>
