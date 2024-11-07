@@ -105,7 +105,7 @@ def main():
     cv2.namedWindow("ZED2 Image", cv2.WINDOW_NORMAL)
 
     while not rospy.is_shutdown():
-        if image is not None:
+        if image is not None and previous_depth_image is not None:
             # Berechne den ROI basierend auf dem Lenkwinkel und der Distanz
             image_height, image_width, _ = image.shape
             x_min, y_min, x_max, y_max = calculate_roi_based_on_steering(steering_angle_average, image_width,
@@ -123,7 +123,6 @@ def main():
 
     cv2.destroyAllWindows()
     rospy.spin()
-
 
 if __name__ == "__main__":
     main()
