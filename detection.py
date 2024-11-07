@@ -113,7 +113,7 @@ def main():
         if image is not None and previous_depth_image is not None:
             # Berechne den ROI basierend auf dem Lenkwinkel und der Distanz
             image_height, image_width, _ = image.shape
-            x_min, y_min, x_max, y_max = calculate_roi_based_on_steering(steering_angle_average, image_width,
+            x_min, y_min, x_max, y_max = calculate_roi_based_on_steering(angle_callback(), image_width,
                                                                          image_height, previous_depth_image)
 
             # Zeichne den ROI auf das Bild
