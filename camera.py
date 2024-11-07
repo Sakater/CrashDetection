@@ -14,12 +14,10 @@ bridge = CvBridge()
 # Globale Variable für das Tiefenbild
 depth_image = None
 
-
 # Callback für das Tiefenbild-Topic
 def depth_callback(msg):
     global depth_image
     depth_image = bridge.imgmsg_to_cv2(msg, desired_encoding="32FC1")
-
 
 # Subscriber für das Tiefenbild
 depth_sub = rospy.Subscriber('/zed2/zed_node/depth/depth_registered', Image, depth_callback)
@@ -34,9 +32,6 @@ while not rospy.is_shutdown():
 
         # Zeige das Tiefenbild an
         cv2.imshow("ZED2 Depth", depth_display_colored)
-
-        # Setze die Größe des Fensters
-        cv2.resizeWindow("ZED2 Depth", 150, 120)  # Breite und Höhe in Pixeln
 
         # Warte auf Tastendruck, um das Bild zu schließen
         if cv2.waitKey(1) & 0xFF == ord('q'):
