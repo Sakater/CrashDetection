@@ -15,7 +15,7 @@ steering_angles = []
 steering_angle_average = 87  # Default value for straight
 steering_max_left = 180
 steering_max_right = 0
-angle=53
+angle = 53
 previous_depth_image = None
 previous_time = None
 image = None
@@ -96,6 +96,13 @@ def main():
 
     while not rospy.is_shutdown():
         if image is not None:
+            # Berechne den ROI basierend auf dem Lenkwinkel
+            image_height, image_width, _ = image.shape
+            x_min, y_min, x_max, y_max = calculate_roi_based_on_steering(steering_angle_average, image_width, image_height)
+
+            # Zeichne den ROI auf das Bild
+            cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
+
             # Display the image
             cv2.imshow("ZED2 Image", image)
 
