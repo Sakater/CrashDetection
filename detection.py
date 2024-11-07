@@ -11,11 +11,11 @@ import numpy as np
 bridge = CvBridge()
 
 # Global variables to store the steering angle, previous depth data, and image
-steering_angles = []
-steering_angle_average = 87  # Default value for straight
+steerings = []
+steering_average = 87  # Default value for straight
 steering_max_left = 180
 steering_max_right = 0
-angle = 53
+max_angle = 53
 previous_depth_image = None
 previous_time = None
 image = None
@@ -36,7 +36,7 @@ def image_callback(msg):
 
 # Callback-Funktion für das Abonnieren der Tiefendaten
 def depth_callback(msg):
-    global previous_depth_image, previous_time, steering_angle_average
+    global previous_depth_image, previous_time
 
     try:
         # Konvertiere ROS Image Message in OpenCV Bild
@@ -46,7 +46,7 @@ def depth_callback(msg):
         if previous_depth_image is not None and previous_time is not None:
             # Bilde den Fahrschlauch (ROI) basierend auf dem Lenkwinkel
             image_height, image_width = depth_image.shape
-            x_min, y_min, x_max, y_max = calculate_roi_based_on_steering(steering_angle_average,
+            x_min, y_min, x_max, y_max = calculate_roi_based_on_steering(angle_callback(),
                                                                          image_width, image_height, depth_image)
 
             # Berechne die Geschwindigkeit
@@ -73,11 +73,16 @@ def depth_callback(msg):
 
 # Callback-Funktion für das Abonnieren der Lenkungsdaten
 def steering_callback(msg):
-    global steering_angle_average, steering_angles
-    steering_angles.append(msg.data)
-    if len(steering_angles) > 10:
-        steering_angles.pop(0)
-    steering_angle_average = sum(steering_angles) / len(steering_angles)
+    global steering_average, steerings
+    steerings.append(msg.data)
+    if len(steerings) > 10:
+        steerings.pop(0)
+    steering_average = sum(steering_angles) / len(steering_angles)
+
+
+def angle_callback():
+    global steering_average, steering_max_left, steering_max_right, max_angle
+    return (max_angle / (steering_max_left - 87) * steering_average)
 
 
 # Funktion zur Berechnung des Fahrschlauchs basierend auf dem Lenkwinkel und der Distanz
@@ -86,10 +91,10 @@ def calculate_roi_based_on_steering(angle, image_width, image_height, depth_imag
     avg_distance = np.mean(depth_image[depth_image > 0])
 
     # Passe die ROI-Größe basierend auf der Distanz an
-    roi_width = int(image_width / (1 + abs(angle - 90) / 10) * (1 / avg_distance))
+    roi_width = int(image_width / (1 + abs(angle) / max_angle) * (1 / avg_distance))
     roi_height = int(image_height / 3 * (1 / avg_distance))
 
-    x_min = int((image_width - roi_width) / 2)
+    x_min = int((image_width - roi_width) / 2 + (angle / max_angle) * (image_width / 2))
     x_max = x_min + roi_width
     y_min = int(image_height / 2)
     y_max = y_min + roi_height
@@ -123,6 +128,7 @@ def main():
 
     cv2.destroyAllWindows()
     rospy.spin()
+
 
 if __name__ == "__main__":
     main()
