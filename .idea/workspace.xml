@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="909f2697-1cc2-45fd-99a7-e09e24ebada9" name="Changes" comment="-colored image 3">
-      <change beforePath="$PROJECT_DIR$/camera.py" beforeDir="false" afterPath="$PROJECT_DIR$/camera.py" afterDir="false" />
+    <list default="true" id="909f2697-1cc2-45fd-99a7-e09e24ebada9" name="Changes" comment="-colored image 4">
+      <change afterPath="$PROJECT_DIR$/detection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +81,7 @@
       <workItem from="1729107570613" duration="11487000" />
       <workItem from="1729166842334" duration="6270000" />
       <workItem from="1729765807558" duration="6768000" />
-      <workItem from="1730979185932" duration="2978000" />
+      <workItem from="1730979185932" duration="3703000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />
@@ -346,7 +347,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730983740955</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="-colored image 4">
+      <option name="closed" value="true" />
+      <created>1730983870476</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1730983870476</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -364,7 +373,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="update4" />
     <MESSAGE value="update5" />
     <MESSAGE value="update5.1" />
     <MESSAGE value="update5.2" />
@@ -389,6 +397,7 @@
     <MESSAGE value="-colored image" />
     <MESSAGE value="-colored image 2" />
     <MESSAGE value="-colored image 3" />
-    <option name="LAST_COMMIT_MESSAGE" value="-colored image 3" />
+    <MESSAGE value="-colored image 4" />
+    <option name="LAST_COMMIT_MESSAGE" value="-colored image 4" />
   </component>
 </project>
