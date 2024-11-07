@@ -36,7 +36,7 @@ while not rospy.is_shutdown():
         cv2.imshow("ZED2 Depth", depth_display_colored)
 
         # Setze die Größe des Fensters
-        cv2.resizeWindow("ZED2 Depth", 640, 480)  # Breite und Höhe in Pixeln
+        cv2.resizeWindow("ZED2 Depth", 150, 120)  # Breite und Höhe in Pixeln
 
         # Warte auf Tastendruck, um das Bild zu schließen
         if cv2.waitKey(1) & 0xFF == ord('q'):

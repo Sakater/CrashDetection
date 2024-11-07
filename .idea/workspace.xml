@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="909f2697-1cc2-45fd-99a7-e09e24ebada9" name="Changes" comment="-kamera darstellung ausprobieren">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="909f2697-1cc2-45fd-99a7-e09e24ebada9" name="Changes" comment="-Fenstergröße anpassen">
       <change beforePath="$PROJECT_DIR$/camera.py" beforeDir="false" afterPath="$PROJECT_DIR$/camera.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -81,7 +80,7 @@
       <workItem from="1729107570613" duration="11487000" />
       <workItem from="1729166842334" duration="6270000" />
       <workItem from="1729765807558" duration="6768000" />
-      <workItem from="1730979185932" duration="1069000" />
+      <workItem from="1730979185932" duration="1180000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />
@@ -291,7 +290,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730979553082</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="-Fenstergröße anpassen">
+      <option name="closed" value="true" />
+      <created>1730980299147</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1730980299147</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -331,6 +338,7 @@
     <MESSAGE value="update11-format coding" />
     <MESSAGE value="- Geschwindigkeit korrigiert&#10;- durchschnittliche Lenkung anstatt momentane&#10;- Probe zum Anzeigen der Kamera mit roi" />
     <MESSAGE value="-kamera darstellung ausprobieren" />
-    <option name="LAST_COMMIT_MESSAGE" value="-kamera darstellung ausprobieren" />
+    <MESSAGE value="-Fenstergröße anpassen" />
+    <option name="LAST_COMMIT_MESSAGE" value="-Fenstergröße anpassen" />
   </component>
 </project>
