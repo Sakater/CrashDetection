@@ -22,6 +22,9 @@ def depth_callback(msg):
 # Subscriber für das Tiefenbild
 depth_sub = rospy.Subscriber('/zed2/zed_node/depth/depth_registered', Image, depth_callback)
 
+# Setze das Fenster auf WINDOW_NORMAL
+cv2.namedWindow("ZED2 Depth", cv2.WINDOW_NORMAL)
+
 # Zeige die Bilder im Stream an
 while not rospy.is_shutdown():
     if depth_image is not None:
