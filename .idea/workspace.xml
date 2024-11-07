@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="909f2697-1cc2-45fd-99a7-e09e24ebada9" name="Changes" comment="-Fenstergröße anpassen 3">
+    <list default="true" id="909f2697-1cc2-45fd-99a7-e09e24ebada9" name="Changes" comment="-colored image">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/camera.py" beforeDir="false" afterPath="$PROJECT_DIR$/camera.py" afterDir="false" />
     </list>
@@ -81,7 +81,7 @@
       <workItem from="1729107570613" duration="11487000" />
       <workItem from="1729166842334" duration="6270000" />
       <workItem from="1729765807558" duration="6768000" />
-      <workItem from="1730979185932" duration="2487000" />
+      <workItem from="1730979185932" duration="2748000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />
@@ -315,7 +315,23 @@
       <option name="project" value="LOCAL" />
       <updated>1730980761925</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="-cv Normal_window">
+      <option name="closed" value="true" />
+      <created>1730983385627</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1730983385627</updated>
+    </task>
+    <task id="LOCAL-00031" summary="-colored image">
+      <option name="closed" value="true" />
+      <created>1730983526793</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1730983526793</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -333,8 +349,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="init" />
-    <MESSAGE value="update" />
     <MESSAGE value="update2" />
     <MESSAGE value="update3" />
     <MESSAGE value="update4" />
@@ -358,6 +372,8 @@
     <MESSAGE value="-Fenstergröße anpassen" />
     <MESSAGE value="-Fenstergröße anpassen 2" />
     <MESSAGE value="-Fenstergröße anpassen 3" />
-    <option name="LAST_COMMIT_MESSAGE" value="-Fenstergröße anpassen 3" />
+    <MESSAGE value="-cv Normal_window" />
+    <MESSAGE value="-colored image" />
+    <option name="LAST_COMMIT_MESSAGE" value="-colored image" />
   </component>
 </project>

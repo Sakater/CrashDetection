@@ -5,40 +5,35 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 import numpy as np
 
-# Initialisiere den ROS-Node
+# Initialize the ROS node
 rospy.init_node('zed_depth_viewer', anonymous=True)
 
-# Erstelle einen CvBridge, um ROS-Bilder in OpenCV-Bilder zu konvertieren
+# Create a CvBridge to convert ROS images to OpenCV images
 bridge = CvBridge()
 
-# Globale Variable für das Tiefenbild
-depth_image = None
+# Global variable for the image
+image = None
 
-# Callback für das Tiefenbild-Topic
-def depth_callback(msg):
-    global depth_image
-    depth_image = bridge.imgmsg_to_cv2(msg, desired_encoding="32FC1")
+# Callback for the image topic
+def image_callback(msg):
+    global image
+    image = bridge.imgmsg_to_cv2(msg, "bgr8")
 
-# Subscriber für das Tiefenbild
-depth_sub = rospy.Subscriber('/zed2/zed_node/right_raw/image_raw_color', Image, depth_callback)
+# Subscriber for the image
+image_sub = rospy.Subscriber('/zed2/zed_node/right_raw/image_raw_color', Image, image_callback)
 
-# Setze das Fenster auf WINDOW_NORMAL
-cv2.namedWindow("ZED2 Depth", cv2.WINDOW_NORMAL)
+# Set the window to WINDOW_NORMAL
+cv2.namedWindow("ZED2 Image", cv2.WINDOW_NORMAL)
 
-# Zeige die Bilder im Stream an
+# Display the images in the stream
 while not rospy.is_shutdown():
-    if depth_image is not None:
-        # Optional: Tiefenbild anzeigen (konvertiere zu einem darstellbaren Format)
-        depth_display = cv2.normalize(depth_image, None, 0, 255, cv2.NORM_MINMAX)
-        depth_display = np.uint8(depth_display)
-        depth_display_colored = cv2.applyColorMap(depth_display, cv2.COLORMAP_JET)
+    if image is not None:
+        # Display the image
+        cv2.imshow("ZED2 Image", image)
 
-        # Zeige das Tiefenbild an
-        cv2.imshow("ZED2 Depth", depth_display_colored)
-
-        # Warte auf Tastendruck, um das Bild zu schließen
+        # Wait for key press to close the image
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
-# Wenn ROS heruntergefahren wird, schließe die Fenster
+# When ROS is shut down, close the windows
 cv2.destroyAllWindows()
