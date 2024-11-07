@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="909f2697-1cc2-45fd-99a7-e09e24ebada9" name="Changes" comment="- Geschwindigkeit korrigiert&#10;- durchschnittliche Lenkung anstatt momentane&#10;- Probe zum Anzeigen der Kamera mit roi">
-      <change beforePath="$PROJECT_DIR$/roi.py" beforeDir="false" afterPath="$PROJECT_DIR$/roi.py" afterDir="false" />
+    <list default="true" id="909f2697-1cc2-45fd-99a7-e09e24ebada9" name="Changes" comment="-kamera darstellung ausprobieren">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/camera.py" beforeDir="false" afterPath="$PROJECT_DIR$/camera.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +23,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Sakater"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Sakater/CrashDetection.git",
+    "accountId": "a5bff3d7-b367-42e3-84ad-d2afeed32ca9"
+  }
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -48,8 +61,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-PY-241.14494.241" />
-        <option value="bundled-python-sdk-0509580d9d50-28c9f5db9ffe-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-241.14494.241" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-PY-242.23726.102" />
+        <option value="bundled-python-sdk-5e1850174b45-399fe30bd8c1-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-242.23726.102" />
       </set>
     </attachedChunks>
   </component>
@@ -68,6 +81,7 @@
       <workItem from="1729107570613" duration="11487000" />
       <workItem from="1729166842334" duration="6270000" />
       <workItem from="1729765807558" duration="6768000" />
+      <workItem from="1730979185932" duration="1069000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />
@@ -269,7 +283,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729777084440</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="-kamera darstellung ausprobieren">
+      <option name="closed" value="true" />
+      <created>1730979553082</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1730979553082</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -308,6 +330,7 @@
     <MESSAGE value="update11" />
     <MESSAGE value="update11-format coding" />
     <MESSAGE value="- Geschwindigkeit korrigiert&#10;- durchschnittliche Lenkung anstatt momentane&#10;- Probe zum Anzeigen der Kamera mit roi" />
-    <option name="LAST_COMMIT_MESSAGE" value="- Geschwindigkeit korrigiert&#10;- durchschnittliche Lenkung anstatt momentane&#10;- Probe zum Anzeigen der Kamera mit roi" />
+    <MESSAGE value="-kamera darstellung ausprobieren" />
+    <option name="LAST_COMMIT_MESSAGE" value="-kamera darstellung ausprobieren" />
   </component>
 </project>
