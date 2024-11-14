@@ -62,6 +62,7 @@ def depth_callback(msg):
                             print("Geschwindigkeit bei ({}, {}): {} Meter/Sekunde".format(x, y, speed))
 
                     print("Momentane Distanz: {}".format(current_distance))
+                    print("Momentane Lenkung: {}".format(steering_average))
 
         # Speichere die aktuellen Tiefendaten und den Zeitstempel
         previous_depth_image = depth_image.copy()
