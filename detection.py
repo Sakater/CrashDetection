@@ -106,7 +106,7 @@ def calculate_roi_based_on_steering(angle, image_width, image_height, depth_imag
     y_max = y_min + roi_height
 
     # Debug-Ausgabe zur Überprüfung der ROI-Werte
-    print(f"ROI: x_min={x_min}, y_min={y_min}, x_max={x_max}, y_max={y_max}, angle={angle}")
+    print("ROI: x_min={}, y_min={}, x_max={}, y_max={}, angle={}".format(x_min, y_min, x_max, y_max, angle))
 
     return x_min, y_min, x_max, y_max
 
