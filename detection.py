@@ -82,7 +82,7 @@ def steering_callback(msg):
 
 def angle_callback():
     """Berechnet linear den Wert des Lenkwinkels im Verhältnis +-90 == 53° Lenkung"""
-    #TODO: abs(average-90) verwenden anstatt max left etc?????
+    #TODO: abs(average-90) verwenden anstatt max left etc????? --> schon erledigt
     global steering_average, steering_max_left, steering_max_right, max_angle
     vorzeichen= 1 if steering_average > 87 else -1
     return (max_angle / abs(steering_max_left - 87) * abs(steering_average-87)*vorzeichen)
@@ -93,10 +93,10 @@ def calculate_roi_based_on_steering(angle, image_width, image_height, depth_imag
     avg_distance = np.mean(depth_image[depth_image > 0])
 
     # Passe die ROI-Größe basierend auf der Distanz an
-    roi_width = int(image_width / (1 + abs(angle) / max_angle) * (1 / avg_distance))
+    roi_width = int(image_width / (1 + angle) * (1 / avg_distance))
     roi_height = int(image_height / 3 * (1 / avg_distance))
 
-    x_min = int((image_width - roi_width) / 2 + (angle / max_angle) * (image_width / 2))
+    x_min = int((image_width - roi_width) / 2 + angle * (image_width / 2))
     x_max = x_min + roi_width
     y_min = int(image_height / 2)
     y_max = y_min + roi_height
