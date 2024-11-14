@@ -12,7 +12,7 @@ bridge = CvBridge()
 
 # Global variables to store the steering angle, previous depth data, and image
 steerings = []
-steering_average = 87  # Default value for straight
+steering_average = 5  # Default value for straight
 steering_max_left = 180
 steering_max_right = 0
 max_angle = 53

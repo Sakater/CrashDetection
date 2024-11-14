@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="909f2697-1cc2-45fd-99a7-e09e24ebada9" name="Changes" comment="-roi update 3.12">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="909f2697-1cc2-45fd-99a7-e09e24ebada9" name="Changes" comment="-roi update 3.13">
       <change beforePath="$PROJECT_DIR$/detection.py" beforeDir="false" afterPath="$PROJECT_DIR$/detection.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -82,15 +81,7 @@
       <workItem from="1729166842334" duration="6270000" />
       <workItem from="1729765807558" duration="6768000" />
       <workItem from="1730979185932" duration="8165000" />
-      <workItem from="1731588436633" duration="9087000" />
-    </task>
-    <task id="LOCAL-00005" summary="update2">
-      <option name="closed" value="true" />
-      <created>1729157801610</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1729157801610</updated>
+      <workItem from="1731588436633" duration="9447000" />
     </task>
     <task id="LOCAL-00006" summary="update2">
       <option name="closed" value="true" />
@@ -476,7 +467,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731598821114</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="-roi update 3.13">
+      <option name="closed" value="true" />
+      <created>1731599322987</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1731599322987</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -494,7 +493,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="-kamera darstellung ausprobieren" />
     <MESSAGE value="-Fenstergröße anpassen" />
     <MESSAGE value="-Fenstergröße anpassen 2" />
     <MESSAGE value="-Fenstergröße anpassen 3" />
@@ -519,6 +517,7 @@
     <MESSAGE value="-roi update 3.10" />
     <MESSAGE value="-roi update 3.11" />
     <MESSAGE value="-roi update 3.12" />
-    <option name="LAST_COMMIT_MESSAGE" value="-roi update 3.12" />
+    <MESSAGE value="-roi update 3.13" />
+    <option name="LAST_COMMIT_MESSAGE" value="-roi update 3.13" />
   </component>
 </project>
