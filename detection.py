@@ -75,10 +75,13 @@ def depth_callback(msg):
 # Callback-Funktion für das Abonnieren der Lenkungsdaten
 def steering_callback(msg):
     global steering_average, steerings
-    steerings.append(msg.data)
-    if len(steerings) > 10:
-        steerings.pop(0)
-    steering_average = sum(steerings) / len(steerings)
+    if msg.data is not None:
+        steerings.append(msg.data)
+        print("Lenkungen empfangen: {}".format(msg.data))
+        print("Lenkungen Liste: {}".format(steerings))
+        if len(steerings) > 10:
+            steerings.pop(0)
+        steering_average = sum(steerings) / len(steerings)
 
 
 def angle_callback():
