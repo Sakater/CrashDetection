@@ -81,10 +81,11 @@ def steering_callback(msg):
 
 
 def angle_callback():
-    #TODO: abs(average-90) verwenden anstatt max left etc
+    """Berechnet linear den Wert des Lenkwinkels im Verhältnis +-90 == 53° Lenkung"""
+    #TODO: abs(average-90) verwenden anstatt max left etc?????
     global steering_average, steering_max_left, steering_max_right, max_angle
-    return (max_angle / (steering_max_left - 87) * steering_average)
-
+    vorzeichen= 1 if steering_average > 87 else -1
+    return (max_angle / abs(steering_max_left - 87) * abs(steering_average-87)*vorzeichen)
 
 # Funktion zur Berechnung des Fahrschlauchs basierend auf dem Lenkwinkel und der Distanz
 def calculate_roi_based_on_steering(angle, image_width, image_height, depth_image):
