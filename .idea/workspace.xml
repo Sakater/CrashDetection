@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="909f2697-1cc2-45fd-99a7-e09e24ebada9" name="Changes" comment="-roi update 3.11">
+    <list default="true" id="909f2697-1cc2-45fd-99a7-e09e24ebada9" name="Changes" comment="-roi update 3.12">
       <change beforePath="$PROJECT_DIR$/detection.py" beforeDir="false" afterPath="$PROJECT_DIR$/detection.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -81,15 +81,7 @@
       <workItem from="1729166842334" duration="6270000" />
       <workItem from="1729765807558" duration="6768000" />
       <workItem from="1730979185932" duration="8165000" />
-      <workItem from="1731588436633" duration="8393000" />
-    </task>
-    <task id="LOCAL-00003" summary="update2">
-      <option name="closed" value="true" />
-      <created>1729157605937</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1729157605937</updated>
+      <workItem from="1731588436633" duration="8592000" />
     </task>
     <task id="LOCAL-00004" summary="update2">
       <option name="closed" value="true" />
@@ -475,7 +467,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731598508634</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="-roi update 3.12">
+      <option name="closed" value="true" />
+      <created>1731598625611</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1731598625611</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -493,7 +493,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="- Geschwindigkeit korrigiert&#10;- durchschnittliche Lenkung anstatt momentane&#10;- Probe zum Anzeigen der Kamera mit roi" />
     <MESSAGE value="-kamera darstellung ausprobieren" />
     <MESSAGE value="-Fenstergröße anpassen" />
     <MESSAGE value="-Fenstergröße anpassen 2" />
@@ -518,6 +517,7 @@
     <MESSAGE value="-roi update 3.9" />
     <MESSAGE value="-roi update 3.10" />
     <MESSAGE value="-roi update 3.11" />
-    <option name="LAST_COMMIT_MESSAGE" value="-roi update 3.11" />
+    <MESSAGE value="-roi update 3.12" />
+    <option name="LAST_COMMIT_MESSAGE" value="-roi update 3.12" />
   </component>
 </project>
