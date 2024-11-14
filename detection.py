@@ -12,7 +12,7 @@ bridge = CvBridge()
 
 # Global variables to store the steering angle, previous depth data, and image
 steerings = []
-steering_average = 87  # Default value for straight
+steering_average = None  # Default value for straight
 steering_max_left = 180
 steering_max_right = 0
 max_angle = 53
@@ -59,10 +59,10 @@ def depth_callback(msg):
                         time_change = current_time - previous_time
                         if time_change > 0:
                             speed = 0 if abs(distance_change / time_change) < 1 else abs(distance_change / time_change)
-                            print("Geschwindigkeit bei ({}, {}): {} Meter/Sekunde".format(x, y, speed))
+                            #print("Geschwindigkeit bei ({}, {}): {} Meter/Sekunde".format(x, y, speed))
 
-                    print("Momentane Distanz: {}".format(current_distance))
-                    print("Momentane Lenkung: {}".format(steering_average))
+                    #print("Momentane Distanz: {}".format(current_distance))
+                    #print("Momentane Lenkung: {}".format(steering_average))
 
         # Speichere die aktuellen Tiefendaten und den Zeitstempel
         previous_depth_image = depth_image.copy()
@@ -78,11 +78,9 @@ def steering_callback(msg):
     global steering_average, steerings
     if msg.data is not None:
         steerings.append(msg.data)
-        print("Lenkungen empfangen: {}".format(msg.data))
-        print("Lenkungen Liste: {}".format(steerings))
         if len(steerings) > 10:
             steerings.pop(0)
-        steering_average = sum(steerings) / len(steerings)
+        steering_average = msg.data #sum(steerings) / len(steerings)
 
 
 def angle_callback():
@@ -106,8 +104,11 @@ def calculate_roi_based_on_steering(angle, image_width, image_height, depth_imag
     x_max = x_min + roi_width
     y_min = int(image_height / 2)
     y_max = y_min + roi_height
-    return x_min, y_min, x_max, y_max
 
+    # Debug-Ausgabe zur Überprüfung der ROI-Werte
+    print(f"ROI: x_min={x_min}, y_min={y_min}, x_max={x_max}, y_max={y_max}, angle={angle}")
+
+    return x_min, y_min, x_max, y_max
 
 def main():
     rospy.init_node('zed_fahrschlauch_analyse', anonymous=True)
@@ -136,7 +137,6 @@ def main():
 
     cv2.destroyAllWindows()
     rospy.spin()
-
 
 if __name__ == "__main__":
     main()
