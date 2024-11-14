@@ -5,6 +5,7 @@ import cv2
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image
 from std_msgs.msg import Float32
+from std_msgs.msg import Int16
 import numpy as np
 
 # Brücke zwischen ROS und OpenCV
@@ -111,7 +112,7 @@ def calculate_roi_based_on_steering(angle, image_width, image_height, depth_imag
 def main():
     rospy.init_node('zed_fahrschlauch_analyse', anonymous=True)
     rospy.Subscriber("/zed2/zed_node/depth/depth_registered", Image, depth_callback)
-    rospy.Subscriber("/ctrlcmd_steering", Float32, steering_callback)
+    rospy.Subscriber("/ctrlcmd_steering", Int16, steering_callback)
     rospy.Subscriber('/zed2/zed_node/right_raw/image_raw_color', Image, image_callback)
 
     cv2.namedWindow("ZED2 Image", cv2.WINDOW_NORMAL)
