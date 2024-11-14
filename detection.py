@@ -78,7 +78,7 @@ def steering_callback(msg):
     steerings.append(msg.data)
     if len(steerings) > 10:
         steerings.pop(0)
-    steering_average = sum(steering_angles) / len(steering_angles)
+    steering_average = sum(steerings) / len(steerings)
 
 
 def angle_callback():
