@@ -4,7 +4,6 @@ import rospy
 import cv2
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image
-from std_msgs.msg import Float32
 from std_msgs.msg import Int16
 import numpy as np
 
@@ -75,6 +74,7 @@ def depth_callback(msg):
 
 # Callback-Funktion für das Abonnieren der Lenkungsdaten
 def steering_callback(msg):
+    print("hello")
     global steering_average, steerings
     if msg.data is not None:
         steerings.append(msg.data)
