@@ -12,7 +12,7 @@ bridge = CvBridge()
 
 # Global variables to store the steering angle, previous depth data, and image
 steerings = []
-steering_average = 5  # Default value for straight
+steering_average = 90  # Default value for straight
 steering_max_left = 180
 steering_max_right = 0
 max_angle = 53
@@ -89,6 +89,7 @@ def angle_callback():
     (-) steht für Rechtslenkung, (+) für Linkslenkung"""
     #TODO: abs(average-90) verwenden anstatt max left etc????? --> schon erledigt
     global steering_average, steering_max_left, steering_max_right, max_angle
+    print("steering_average: {}".format(steering_average))
     vorzeichen = 1 if steering_average > 87 else -1
     angle = (max_angle / abs(steering_max_left - 87) * abs(steering_average - 87) * vorzeichen)
     print("Calculated angle: {}".format(angle))
