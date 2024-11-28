@@ -84,12 +84,12 @@ def steering_callback(msg):
         print("Updated steering_average: {}".format(steering_average))
 
 
-def angle_callback():
+async def angle_callback():
     """Berechnet linear den Wert des Lenkwinkels im Verhältnis +-90 == 53° Lenkung
     (-) steht für Rechtslenkung, (+) für Linkslenkung"""
     #TODO: abs(average-90) verwenden anstatt max left etc????? --> schon erledigt
-    global steering_average, steering_max_left, steering_max_right, max_angle
-    print("steering_average: {}".format(steering_average))
+    global steering_average, steering_max_left, max_angle
+    print("steering_average: {}, maxL: {}, maxA: {}".format(steering_average, steering_max_left, max_angle))
     vorzeichen = 1 if steering_average > 87 else -1
     angle = (max_angle / abs(steering_max_left - 87) * abs(steering_average - 87) * vorzeichen)
     print("Calculated angle: {}".format(angle))
@@ -116,8 +116,8 @@ def calculate_roi_based_on_steering(angle, image_width, image_height, depth_imag
 
 def main():
     rospy.init_node('zed_fahrschlauch_analyse', anonymous=True)
-    rospy.Subscriber("/zed2/zed_node/depth/depth_registered", Image, depth_callback)
     rospy.Subscriber("/ctrlcmd_steering", Int16, steering_callback)
+    rospy.Subscriber("/zed2/zed_node/depth/depth_registered", Image, depth_callback)
     rospy.Subscriber('/zed2/zed_node/right_raw/image_raw_color', Image, image_callback)
 
     cv2.namedWindow("ZED2 Image", cv2.WINDOW_NORMAL)
