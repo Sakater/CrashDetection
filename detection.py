@@ -67,7 +67,7 @@ def depth_callback(msg):
                                 danger = 2
                             elif speed*1.5 > current_distance:
                                 danger = 1
-                    print("Danger: {}".format(danger))
+            print("Danger: {}".format(danger))
                     #print("Momentane Distanz: {}".format(current_distance))
                     #print("Momentane Lenkung: {}".format(steering_average))
 
