@@ -122,7 +122,7 @@ def calculate_roi_based_on_steering(angle, image_width, image_height, depth_imag
 def main():
     rospy.init_node('zed_fahrschlauch_analyse', anonymous=True)
     rospy.Subscriber("/ctrlcmd_steering", Int16, steering_callback)
-    #rospy.Subscriber('/zed2/zed_node/right_raw/image_raw_color', Image, image_callback)
+    rospy.Subscriber('/zed2/zed_node/right_raw/image_raw_color', Image, image_callback)
     danger = rospy.Subscriber("/zed2/zed_node/depth/depth_registered", Image, depth_callback)
     cv2.namedWindow("ZED2 Image", cv2.WINDOW_NORMAL)
 
@@ -135,10 +135,10 @@ def main():
             print("Danger: {}".format(danger))
 
             # Zeichne den ROI auf das Bild
-            cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
+            #cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
 
             # Display the image
-            cv2.imshow("ZED2 Image", image)
+            #cv2.imshow("ZED2 Image", image)
 
             # Wait for key press to close the image
             if cv2.waitKey(1) & 0xFF == ord('q'):
