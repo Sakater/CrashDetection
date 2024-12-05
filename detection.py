@@ -124,7 +124,7 @@ def main():
     rospy.Subscriber("/ctrlcmd_steering", Int16, steering_callback)
     rospy.Subscriber('/zed2/zed_node/right_raw/image_raw_color', Image, image_callback)
     danger = rospy.Subscriber("/zed2/zed_node/depth/depth_registered", Image, depth_callback)
-    cv2.namedWindow("ZED2 Image", cv2.WINDOW_NORMAL)
+    #cv2.namedWindow("ZED2 Image", cv2.WINDOW_NORMAL)
 
     while not rospy.is_shutdown():
         if image is not None and previous_depth_image is not None:
