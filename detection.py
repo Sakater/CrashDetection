@@ -61,10 +61,13 @@ def depth_callback(msg):
                             speed = 0 if abs(distance_change / time_change) < 1 else abs(distance_change / time_change)
                             #print("Geschwindigkeit bei ({}, {}): {} Meter/Sekunde".format(x, y, speed))
                             if speed >= current_distance:
+                                print("Danger: 3")
                                 return 3
                             elif speed < current_distance and speed*1.5 >= current_distance:
+                                print("Danger: 2")
                                 return 2
                             elif speed*1.5 > current_distance:
+                                print("Danger: 1")
                                 return 1
                     #print("Momentane Distanz: {}".format(current_distance))
                     #print("Momentane Lenkung: {}".format(steering_average))
