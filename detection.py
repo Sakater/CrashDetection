@@ -60,7 +60,12 @@ def depth_callback(msg):
                         if time_change > 0:
                             speed = 0 if abs(distance_change / time_change) < 1 else abs(distance_change / time_change)
                             #print("Geschwindigkeit bei ({}, {}): {} Meter/Sekunde".format(x, y, speed))
-
+                            if speed >= current_distance:
+                                return 3
+                            elif speed < current_distance and speed*1.5 >= current_distance:
+                                return 2
+                            elif speed*1.5 > current_distance:
+                                return 1
                     #print("Momentane Distanz: {}".format(current_distance))
                     #print("Momentane Lenkung: {}".format(steering_average))
 
@@ -84,7 +89,7 @@ def steering_callback(msg):
         print("Updated steering_average: {}".format(steering_average))
 
 
-async def angle_callback():
+def angle_callback():
     """Berechnet linear den Wert des Lenkwinkels im Verhältnis +-90 == 53° Lenkung
     (-) steht für Rechtslenkung, (+) für Linkslenkung"""
     #TODO: abs(average-90) verwenden anstatt max left etc????? --> schon erledigt
@@ -117,9 +122,8 @@ def calculate_roi_based_on_steering(angle, image_width, image_height, depth_imag
 def main():
     rospy.init_node('zed_fahrschlauch_analyse', anonymous=True)
     rospy.Subscriber("/ctrlcmd_steering", Int16, steering_callback)
-    rospy.Subscriber("/zed2/zed_node/depth/depth_registered", Image, depth_callback)
     rospy.Subscriber('/zed2/zed_node/right_raw/image_raw_color', Image, image_callback)
-
+    danger = rospy.Subscriber("/zed2/zed_node/depth/depth_registered", Image, depth_callback)
     cv2.namedWindow("ZED2 Image", cv2.WINDOW_NORMAL)
 
     while not rospy.is_shutdown():
@@ -128,6 +132,7 @@ def main():
             image_height, image_width, _ = image.shape
             x_min, y_min, x_max, y_max = calculate_roi_based_on_steering(angle_callback(), image_width,
                                                                          image_height, previous_depth_image)
+            print("Danger: {}".format(danger))
 
             # Zeichne den ROI auf das Bild
             cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
