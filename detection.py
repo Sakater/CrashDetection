@@ -19,7 +19,7 @@ max_angle = 53
 previous_depth_image = None
 previous_time = None
 image = None
-danger= 1
+ttc= 1
 
 
 # Callback-Funktion für das Abonnieren der Bilddaten
@@ -37,7 +37,7 @@ def image_callback(msg):
 
 # Callback-Funktion für das Abonnieren der Tiefendaten
 def depth_callback(msg):
-    global previous_depth_image, previous_time, danger
+    global previous_depth_image, previous_time, ttc
 
     try:
         # Konvertiere ROS Image Message in OpenCV Bild
@@ -62,12 +62,12 @@ def depth_callback(msg):
                             speed = 0 if abs(distance_change / time_change) < 1 else abs(distance_change / time_change)
                             #print("Geschwindigkeit bei ({}, {}): {} Meter/Sekunde".format(x, y, speed))
                             if speed >= current_distance: # notbremsung nötig!
-                                danger = 3
+                                ttc = 3
                             elif speed < current_distance and speed*1.5 >= current_distance: # aufpassen!
-                                danger = 2
+                                ttc = 2
                             elif speed*1.5 > current_distance: # nicht gefährlich
-                                danger = 1
-            print("Danger: {}".format(danger))
+                                ttc = 1
+            print("TTC: {}".format(ttc))
                     #print("Momentane Distanz: {}".format(current_distance))
                     #print("Momentane Lenkung: {}".format(steering_average))
 
@@ -126,7 +126,7 @@ def main():
     rospy.Subscriber("/ctrlcmd_steering", Int16, steering_callback)
     rospy.Subscriber('/zed2/zed_node/right_raw/image_raw_color', Image, image_callback)
     rospy.Subscriber("/zed2/zed_node/depth/depth_registered", Image, depth_callback)
-    rospy.Publisher("/crash_detection", Int16, danger)
+    rospy.Publisher("/ttc", Int16, ttc)
     #cv2.namedWindow("ZED2 Image", cv2.WINDOW_NORMAL)
 
     while not rospy.is_shutdown():
