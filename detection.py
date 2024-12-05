@@ -19,6 +19,7 @@ max_angle = 53
 previous_depth_image = None
 previous_time = None
 image = None
+danger= None
 
 
 # Callback-Funktion für das Abonnieren der Bilddaten
@@ -36,7 +37,7 @@ def image_callback(msg):
 
 # Callback-Funktion für das Abonnieren der Tiefendaten
 def depth_callback(msg):
-    global previous_depth_image, previous_time
+    global previous_depth_image, previous_time, danger
 
     try:
         # Konvertiere ROS Image Message in OpenCV Bild
@@ -61,14 +62,12 @@ def depth_callback(msg):
                             speed = 0 if abs(distance_change / time_change) < 1 else abs(distance_change / time_change)
                             #print("Geschwindigkeit bei ({}, {}): {} Meter/Sekunde".format(x, y, speed))
                             if speed >= current_distance:
-                                print("Danger: 3")
-                                return 3
+                                danger = 3
                             elif speed < current_distance and speed*1.5 >= current_distance:
-                                print("Danger: 2")
-                                return 2
+                                danger = 2
                             elif speed*1.5 > current_distance:
-                                print("Danger: 1")
-                                return 1
+                                danger = 1
+                    print("Danger: {}".format(danger))
                     #print("Momentane Distanz: {}".format(current_distance))
                     #print("Momentane Lenkung: {}".format(steering_average))
 
@@ -126,7 +125,7 @@ def main():
     rospy.init_node('zed_fahrschlauch_analyse', anonymous=True)
     rospy.Subscriber("/ctrlcmd_steering", Int16, steering_callback)
     rospy.Subscriber('/zed2/zed_node/right_raw/image_raw_color', Image, image_callback)
-    danger = rospy.Subscriber("/zed2/zed_node/depth/depth_registered", Image, depth_callback)
+    rospy.Subscriber("/zed2/zed_node/depth/depth_registered", Image, depth_callback)
     #cv2.namedWindow("ZED2 Image", cv2.WINDOW_NORMAL)
 
     while not rospy.is_shutdown():
@@ -135,7 +134,6 @@ def main():
             image_height, image_width, _ = image.shape
             x_min, y_min, x_max, y_max = calculate_roi_based_on_steering(angle_callback(), image_width,
                                                                          image_height, previous_depth_image)
-            print("Danger: {}".format(danger))
 
             # Zeichne den ROI auf das Bild
             #cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
