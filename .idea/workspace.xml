@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="909f2697-1cc2-45fd-99a7-e09e24ebada9" name="Changes" comment="-roi update 3.16">
+    <list default="true" id="909f2697-1cc2-45fd-99a7-e09e24ebada9" name="Changes" comment="-roi update 3.17">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/detection.py" beforeDir="false" afterPath="$PROJECT_DIR$/detection.py" afterDir="false" />
     </list>
@@ -86,15 +86,7 @@
       <workItem from="1731588436633" duration="9675000" />
       <workItem from="1732800721568" duration="5341000" />
       <workItem from="1732806825519" duration="1965000" />
-      <workItem from="1733388603160" duration="2854000" />
-    </task>
-    <task id="LOCAL-00009" summary="update5">
-      <option name="closed" value="true" />
-      <created>1729166030351</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1729166030351</updated>
+      <workItem from="1733388603160" duration="3825000" />
     </task>
     <task id="LOCAL-00010" summary="update5.1">
       <option name="closed" value="true" />
@@ -480,7 +472,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732804827959</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="-roi update 3.17">
+      <option name="closed" value="true" />
+      <created>1733391584181</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1733391584181</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -498,7 +498,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="-cv Normal_window" />
     <MESSAGE value="-colored image" />
     <MESSAGE value="-colored image 2" />
     <MESSAGE value="-colored image 3" />
@@ -523,7 +522,8 @@
     <MESSAGE value="-roi update 3.14" />
     <MESSAGE value="-roi update 3.15" />
     <MESSAGE value="-roi update 3.16" />
-    <option name="LAST_COMMIT_MESSAGE" value="-roi update 3.16" />
+    <MESSAGE value="-roi update 3.17" />
+    <option name="LAST_COMMIT_MESSAGE" value="-roi update 3.17" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/CrashDetection$hh.coverage" NAME="hh Coverage Results" MODIFIED="1732804033162" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
