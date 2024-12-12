@@ -26,7 +26,7 @@ def image_callback(msg):
     try:
         # Convert the ROS Image message to a NumPy array
         image = np.frombuffer(msg.data, dtype=np.uint8).reshape(msg.height, msg.width, -1)
-        #image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+        image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     except CvBridgeError as e:
         rospy.logerr("CvBridge Error: {0}".format(e))
     except Exception as e:
@@ -39,7 +39,7 @@ def depth_callback(msg):
 
     try:
         # Konvertiere ROS Image Message in OpenCV Bild
-        #depth_image = bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
+        depth_image = bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
         current_time = time.time()
 
         if previous_depth_image is not None and previous_time is not None:
@@ -166,7 +166,7 @@ def main():
     pub_motor = rospy.Publisher("/ctrlcmd_motor", Int16, queue_size=1)
 
     rospy.Rate(30)  # 30 Hz
-    #cv2.namedWindow("ZED2 Image", cv2.WINDOW_NORMAL)
+    # cv2.namedWindow("ZED2 Image", cv2.WINDOW_NORMAL)
 
     while not rospy.is_shutdown():
         if image is not None and previous_depth_image is not None:
@@ -176,16 +176,16 @@ def main():
                                                                          image_height, previous_depth_image)
 
             # Zeichne den ROI auf das Bild
-            #cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
+            # cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
 
             # Display the image
-            #cv2.imshow("ZED2 Image", image)
+            # cv2.imshow("ZED2 Image", image)
 
             # Wait for key press to close the image
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
-    #cv2.destroyAllWindows()
+    cv2.destroyAllWindows()
     rospy.spin()
 
 
