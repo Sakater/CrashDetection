@@ -166,7 +166,7 @@ def main():
     pub_motor = rospy.Publisher("/ctrlcmd_motor", Int16, queue_size=1)
 
     rospy.Rate(30)  # 30 Hz
-    cv2.namedWindow("ZED2 Image", cv2.WINDOW_NORMAL)
+    #cv2.namedWindow("ZED2 Image", cv2.WINDOW_NORMAL)
 
     while not rospy.is_shutdown():
         if image is not None and previous_depth_image is not None:
@@ -176,10 +176,10 @@ def main():
                                                                          image_height, previous_depth_image)
 
             # Zeichne den ROI auf das Bild
-            cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
+            #cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
 
             # Display the image
-            cv2.imshow("ZED2 Image", image)
+            #cv2.imshow("ZED2 Image", image)
 
             # Wait for key press to close the image
             if cv2.waitKey(1) & 0xFF == ord('q'):
