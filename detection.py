@@ -19,7 +19,9 @@ max_angle = 53
 previous_depth_image = None
 previous_time = None
 image = None
-ttc= 1
+ttc = 1
+current_speed = None
+pub_motor = pub_motor_fas = pub_ttc = motor_fas = ttc_time = dtc = None
 
 
 # Callback-Funktion für das Abonnieren der Bilddaten
@@ -37,7 +39,7 @@ def image_callback(msg):
 
 # Callback-Funktion für das Abonnieren der Tiefendaten
 def depth_callback(msg):
-    global previous_depth_image, previous_time, ttc
+    global previous_depth_image, previous_time, ttc, ttc_time, dtc
 
     try:
         # Konvertiere ROS Image Message in OpenCV Bild
@@ -59,17 +61,20 @@ def depth_callback(msg):
                         distance_change = current_distance - previous_distance
                         time_change = current_time - previous_time
                         if time_change > 0:
+                            ttc_time = current_distance / speed
+                            dtc= current_distance
                             speed = 0 if abs(distance_change / time_change) < 1 else abs(distance_change / time_change)
-                            #print("Geschwindigkeit bei ({}, {}): {} Meter/Sekunde".format(x, y, speed))
-                            if speed >= current_distance: # notbremsung nötig!
+                            # print("Geschwindigkeit bei ({}, {}): {} Meter/Sekunde".format(x, y, speed))
+                            if speed >= current_distance:  # notbremsung nötig! => crash in unter 1 Sekunde
                                 ttc = 3
-                            elif speed < current_distance and speed*1.5 >= current_distance: # aufpassen!
+                            elif speed < current_distance and speed * 1.5 >= current_distance:  # aufpassen! => crash in unter 1.5 Sekunden
                                 ttc = 2
-                            elif speed*1.5 > current_distance: # nicht gefährlich
+                            elif speed * 1.5 > current_distance:  # nicht gefährlich => crash voraussichtlich nicht in den nächsten 1.5 Sekunden
                                 ttc = 1
-            print("TTC: {}".format(ttc))
-                    #print("Momentane Distanz: {}".format(current_distance))
-                    #print("Momentane Lenkung: {}".format(steering_average))
+
+            print("TTC: {}, DTC: {}".format(ttc, dtc))
+            # print("Momentane Distanz: {}".format(current_distance))
+            # print("Momentane Lenkung: {}".format(steering_average))
 
         # Speichere die aktuellen Tiefendaten und den Zeitstempel
         previous_depth_image = depth_image.copy()
@@ -87,20 +92,21 @@ def steering_callback(msg):
         """steerings.append(msg.data)
         if len(steerings) > 10:
             steerings.pop(0)"""
-        steering_average = msg.data #sum(steerings) / len(steerings)
+        steering_average = msg.data  # sum(steerings) / len(steerings)
         print("Updated steering_average: {}".format(steering_average))
 
 
 def angle_callback():
     """Berechnet linear den Wert des Lenkwinkels im Verhältnis +-90 == 53° Lenkung
     (-) steht für Rechtslenkung, (+) für Linkslenkung"""
-    #TODO: abs(average-90) verwenden anstatt max left etc????? --> schon erledigt
+    # TODO: abs(average-90) verwenden anstatt max left etc????? --> schon erledigt
     global steering_average, steering_max_left, max_angle
     print("steering_average: {}, maxL: {}, maxA: {}".format(steering_average, steering_max_left, max_angle))
     vorzeichen = 1 if steering_average > 87 else -1
     angle = (max_angle / abs(steering_max_left - 87) * abs(steering_average - 87) * vorzeichen)
     print("Calculated angle: {}".format(angle))
     return angle
+
 
 # Funktion zur Berechnung des Fahrschlauchs basierend auf dem Lenkwinkel und der Distanz
 def calculate_roi_based_on_steering(angle, image_width, image_height, depth_image):
@@ -121,13 +127,50 @@ def calculate_roi_based_on_steering(angle, image_width, image_height, depth_imag
 
     return x_min, y_min, x_max, y_max
 
+
+def brake():
+    global ttc, current_speed, pub_motor, pub_motor_fas, motor_fas
+    if motor_fas is not None:
+        if ttc == 3:
+            pub_motor_fas.publish(1)
+            pub_motor.publish(0)
+            pub_motor_fas.publish(motor_fas)
+        elif ttc == 2:
+            pub_motor_fas.publish(1)
+            pub_motor.publish(current_speed - 10)
+            pub_motor_fas.publish(motor_fas)
+        elif ttc == 1:
+            pass
+
+
+def speed_callback(msg):
+    global current_speed
+    if msg.data is not None:
+        current_speed = msg.data
+
+
+def motor_fas_callback(msg):
+    global motor_fas
+    if msg.data is not None:
+        motor_fas = msg.data
+
+
 def main():
+    global pub_motor, pub_motor_fas
     rospy.init_node('zed_fahrschlauch_analyse', anonymous=True)
     rospy.Subscriber("/ctrlcmd_steering", Int16, steering_callback)
     rospy.Subscriber('/zed2/zed_node/right_raw/image_raw_color', Image, image_callback)
     rospy.Subscriber("/zed2/zed_node/depth/depth_registered", Image, depth_callback)
+    rospy.Subscriber("/ctrlcmd_motor", Int16, speed_callback)
+    rospy.Subscriber("/ctrlcmd_motorFAS", Int16, brake)
+
     rospy.Publisher("/ttc", Int16, ttc)
-    #cv2.namedWindow("ZED2 Image", cv2.WINDOW_NORMAL)
+    rospy.Publisher("/dtc", Int16, dtc)
+    pub_motor_fas = rospy.Publisher("/ctrlcmd_motorFAS", Int16, queue_size=1)
+    pub_motor = rospy.Publisher("/ctrlcmd_motor", Int16, queue_size=1)
+
+    rospy.Rate(30)  # 30 Hz
+    # cv2.namedWindow("ZED2 Image", cv2.WINDOW_NORMAL)
 
     while not rospy.is_shutdown():
         if image is not None and previous_depth_image is not None:
@@ -137,10 +180,10 @@ def main():
                                                                          image_height, previous_depth_image)
 
             # Zeichne den ROI auf das Bild
-            #cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
+            # cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
 
             # Display the image
-            #cv2.imshow("ZED2 Image", image)
+            # cv2.imshow("ZED2 Image", image)
 
             # Wait for key press to close the image
             if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -148,6 +191,7 @@ def main():
 
     cv2.destroyAllWindows()
     rospy.spin()
+
 
 if __name__ == "__main__":
     main()
