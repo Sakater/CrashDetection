@@ -16,12 +16,8 @@ steering_average = 90  # Default value for straight
 steering_max_left = 180
 steering_max_right = 0
 max_angle = 53
-previous_depth_image = None
-previous_time = None
-image = None
 ttc = 1
-current_speed = None
-pub_motor = pub_motor_fas = pub_ttc = motor_fas = ttc_time = dtc = None
+pub_motor = pub_motor_fas = pub_ttc = motor_fas = ttc_time = dtc = current_speed = image = previous_depth_image = previous_time = None
 
 
 # Callback-Funktion für das Abonnieren der Bilddaten
@@ -170,7 +166,7 @@ def main():
     pub_motor = rospy.Publisher("/ctrlcmd_motor", Int16, queue_size=1)
 
     rospy.Rate(30)  # 30 Hz
-    # cv2.namedWindow("ZED2 Image", cv2.WINDOW_NORMAL)
+    cv2.namedWindow("ZED2 Image", cv2.WINDOW_NORMAL)
 
     while not rospy.is_shutdown():
         if image is not None and previous_depth_image is not None:
@@ -180,10 +176,10 @@ def main():
                                                                          image_height, previous_depth_image)
 
             # Zeichne den ROI auf das Bild
-            # cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
+            cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
 
             # Display the image
-            # cv2.imshow("ZED2 Image", image)
+            cv2.imshow("ZED2 Image", image)
 
             # Wait for key press to close the image
             if cv2.waitKey(1) & 0xFF == ord('q'):
