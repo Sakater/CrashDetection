@@ -164,7 +164,7 @@ def main():
     pub_motor_fas = rospy.Publisher("/ctrlcmd_motorFAS", Int16, queue_size=1)
     pub_motor = rospy.Publisher("/ctrlcmd_motor", Int16, queue_size=1)
 
-    rospy.Rate(30)  # 30 Hz
+    rospy.Rate(120)  # 120 Hz
     # cv2.namedWindow("ZED2 Image", cv2.WINDOW_NORMAL)
 
     while not rospy.is_shutdown():
