@@ -26,7 +26,7 @@ def image_callback(msg):
     try:
         # Convert the ROS Image message to a NumPy array
         image = np.frombuffer(msg.data, dtype=np.uint8).reshape(msg.height, msg.width, -1)
-        image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+        #image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     except CvBridgeError as e:
         rospy.logerr("CvBridge Error: {0}".format(e))
     except Exception as e:
@@ -39,7 +39,7 @@ def depth_callback(msg):
 
     try:
         # Konvertiere ROS Image Message in OpenCV Bild
-        depth_image = bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
+        #depth_image = bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
         current_time = time.time()
 
         if previous_depth_image is not None and previous_time is not None:
@@ -185,7 +185,7 @@ def main():
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
-    cv2.destroyAllWindows()
+    #cv2.destroyAllWindows()
     rospy.spin()
 
 
