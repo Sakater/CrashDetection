@@ -159,8 +159,8 @@ def main():
     rospy.Subscriber("/ctrlcmd_motor", Int16, speed_callback)
     rospy.Subscriber("/ctrlcmd_motorFAS", Int16, brake)
 
-    rospy.Publisher("/ttc", Int16, ttc)
-    rospy.Publisher("/dtc", Int16, dtc)
+    rospy.Publisher("/ttc", Int16, queue_size=1).publish(ttc)
+    rospy.Publisher("/dtc", Int16, queue_size=1).publish(dtc)
     pub_motor_fas = rospy.Publisher("/ctrlcmd_motorFAS", Int16, queue_size=1)
     pub_motor = rospy.Publisher("/ctrlcmd_motor", Int16, queue_size=1)
 
