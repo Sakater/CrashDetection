@@ -58,7 +58,7 @@ def depth_callback(msg):
                         distance_change = current_distance - previous_distance
                         time_change = current_time - previous_time
                         if time_change > 0:
-                            speed = 0.5 if abs(distance_change / time_change) < 0.5 else abs(distance_change / time_change)
+                            speed = 0 if abs(distance_change / time_change) < 0.5 else abs(distance_change / time_change)
                             ttc_time = current_distance / speed
                             dtc = current_distance
                             # print("Geschwindigkeit bei ({}, {}): {} Meter/Sekunde".format(x, y, speed))
