@@ -67,7 +67,7 @@ def depth_callback(msg):
                                 ttc = 2
                             elif speed * 1.5 > current_distance:  # nicht gefährlich => crash voraussichtlich nicht in den nächsten 1.5 Sekunden
                                 ttc = 1
-                            safety_brake()
+                            safety_brake(ttc, current_speed)
 
             print("TTC: {}, DTC: {}".format(ttc, dtc))
             # print("Momentane Distanz: {}".format(current_distance))
@@ -80,6 +80,19 @@ def depth_callback(msg):
     except Exception as e:
         rospy.logerr("Fehler beim Verarbeiten der Tiefendaten: {}".format(e))
 
+def safety_brake(ttc, current_speed):
+    global pub_motor, pub_motor_fas, motor_fas
+    if motor_fas is not None:
+        if ttc == 3:
+            pub_motor_fas.publish(1)
+            pub_motor.publish(0)
+            pub_motor_fas.publish(motor_fas)
+        elif ttc == 2:
+            pub_motor_fas.publish(1)
+            pub_motor.publish(current_speed - 10)
+            pub_motor_fas.publish(motor_fas)
+        elif ttc == 1:
+            pass
 
 # Callback-Funktion für das Abonnieren der Lenkungsdaten
 def steering_callback(msg):
@@ -124,19 +137,7 @@ def calculate_roi_based_on_steering(angle, image_width, image_height, depth_imag
     return x_min, y_min, x_max, y_max
 
 
-def safety_brake():
-    global ttc, current_speed, pub_motor, pub_motor_fas, motor_fas
-    if motor_fas is not None:
-        if ttc == 3:
-            pub_motor_fas.publish(1)
-            pub_motor.publish(0)
-            pub_motor_fas.publish(motor_fas)
-        elif ttc == 2:
-            pub_motor_fas.publish(1)
-            pub_motor.publish(current_speed - 10)
-            pub_motor_fas.publish(motor_fas)
-        elif ttc == 1:
-            pass
+
 
 def motor_fas_callback(msg):
     global motor_fas
