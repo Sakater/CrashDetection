@@ -122,6 +122,10 @@ def calculate_roi_based_on_steering(angle, image_width, image_height, depth_imag
     # Berechne die durchschnittliche Distanz im Bild
     avg_distance = np.mean(depth_image[depth_image > 0])
 
+    # Überprüfe, ob avg_distance eine gültige Zahl ist
+    if np.isnan(avg_distance) or avg_distance == 0:
+        avg_distance = 1  # Setze einen Standardwert, um Division durch Null zu vermeiden
+
     # Passe die ROI-Größe basierend auf der Distanz an
     roi_width = int(image_width / (1 + abs(angle)) * (1 / avg_distance))
     roi_height = int(image_height / 3 * (1 / avg_distance))
