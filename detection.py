@@ -17,7 +17,8 @@ steering_max_left = 180
 steering_max_right = 0
 max_angle = 53
 ttc = 1
-pub_motor = pub_motor_fas = pub_ttc = motor_fas = ttc_time = dtc = current_speed = image = previous_depth_image = previous_time = None
+motor_fas = 0
+pub_motor = pub_motor_fas = pub_ttc = ttc_time = dtc = current_speed = image = previous_depth_image = previous_time = None
 
 
 # Callback-Funktion für das Abonnieren der Bilddaten
