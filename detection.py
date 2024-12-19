@@ -69,7 +69,7 @@ def depth_callback(msg):
                             elif speed * 1.5 > current_distance:  # nicht gefährlich => crash voraussichtlich nicht in den nächsten 1.5 Sekunden
                                 ttc = 1
                             safety_brake(ttc, current_speed)
-                    print("Geschwindigkeit bei ({}, {}): {} Meter/Sekunde".format(x, y, speed))
+            print("Geschwindigkeit bei ({}, {}): {} Meter/Sekunde".format(x, y, speed))
             print("TTC: {}, DTC: {}".format(ttc, dtc))
             # print("Momentane Distanz: {}".format(current_distance))
             # print("Momentane Lenkung: {}".format(steering_average))
