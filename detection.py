@@ -142,13 +142,6 @@ def calculate_roi_based_on_steering(angle, image_width, image_height, depth_imag
     return x_min, y_min, x_max, y_max
 
 
-
-
-def motor_fas_callback(msg):
-    global motor_fas
-    if msg.data is not None:
-        motor_fas = msg.data
-
 def speed_callback(msg):
     global current_speed
     if msg.data is not None:
@@ -162,7 +155,6 @@ def main():
     rospy.Subscriber('/zed2/zed_node/right_raw/image_raw_color', Image, image_callback)
     rospy.Subscriber("/zed2/zed_node/depth/depth_registered", Image, depth_callback)
     rospy.Subscriber("/ctrlcmd_motor", Int16, speed_callback)
-    rospy.Subscriber("/ctrlcmd_motorFAS", Int16, motor_fas_callback)
 
     rospy.Publisher("/ttc", Int16, queue_size=1).publish(ttc)
     rospy.Publisher("/dtc", Int16, queue_size=1).publish(dtc)
