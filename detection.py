@@ -88,7 +88,7 @@ def safety_brake(ttc, current_speed):
             pub_motor_fas.publish(1)
             pub_motor.publish(0)
             pub_motor_fas.publish(motor_fas)
-        elif ttc == 2:
+        elif ttc == 2 and current_speed > 10:
             pub_motor_fas.publish(1)
             pub_motor.publish(current_speed - 10)
             pub_motor_fas.publish(motor_fas)
