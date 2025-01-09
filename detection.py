@@ -36,7 +36,7 @@ def image_callback(msg):
 
 # Callback-Funktion für das Abonnieren der Tiefendaten
 def depth_callback(msg):
-    global previous_depth_image, previous_time, ttc, ttc_time, dtc
+    global previous_depth_image, previous_time, ttc, ttc_time, dtc, current_speed
 
     try:
         # Konvertiere ROS Image Message in OpenCV Bild
@@ -109,7 +109,6 @@ def steering_callback(msg):
 def angle_callback():
     """Berechnet linear den Wert des Lenkwinkels im Verhältnis +-90 == 53° Lenkung
     (-) steht für Rechtslenkung, (+) für Linkslenkung"""
-    # TODO: abs(average-90) verwenden anstatt max left etc????? --> schon erledigt
     global steering_average, steering_max_left, max_angle
     #print("steering_average: {}, maxL: {}, maxA: {}".format(steering_average, steering_max_left, max_angle))
     vorzeichen = 1 if steering_average > 87 else -1
@@ -161,7 +160,7 @@ def main():
     pub_motor_fas = rospy.Publisher("/ctrlcmd_motorFAS", Int16, queue_size=1)
     pub_motor = rospy.Publisher("/ctrlcmd_motor", Int16, queue_size=1)
 
-    #rospy.Rate(120)  # 120 Hz
+    #rospy.Rate(120)  # 120 Hz für die Anzahl der Iterationen der Loop in "while not rospy.is_shutdown()" pro Sekunde
     # cv2.namedWindow("ZED2 Image", cv2.WINDOW_NORMAL)
 
     while not rospy.is_shutdown():
