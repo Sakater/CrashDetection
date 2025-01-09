@@ -58,19 +58,15 @@ def depth_callback(msg):
                         distance_change = current_distance - previous_distance
                         time_change = current_time - previous_time
                         if time_change > 0:
-                            speed = 0 if abs(distance_change / time_change) < 0.5 else abs(
-                                distance_change / time_change)
-                            if speed == 0:
-                                ttc_time = 9999
-                            else:
-                                ttc_time = current_distance / speed
+                            speed = 0 if abs(distance_change / time_change) < 0.5 else abs(distance_change / time_change)
+                            ttc_time = current_distance / speed if speed != 0 else 9999
                             dtc = current_distance
                             # print("Geschwindigkeit bei ({}, {}): {} Meter/Sekunde".format(x, y, speed))
                             if speed >= current_distance:  # notbremsung nötig! => crash in unter 1 Sekunde
                                 ttc = 3
-                            elif speed < current_distance and speed * 1.5 >= current_distance and speed > 0:  # aufpassen! => crash in unter 1.5 Sekunden
+                            elif speed * 1.5 >= current_distance and speed > 0:  # aufpassen! => crash in unter 1.5 Sekunden
                                 ttc = 2
-                            elif speed * 1.5 > current_distance or speed == 0:  # nicht gefährlich => crash voraussichtlich nicht in den nächsten 1.5 Sekunden
+                            else:  # nicht gefährlich => crash voraussichtlich nicht in den nächsten 1.5 Sekunden
                                 ttc = 1
                             # safety_brake(ttc, current_speed)
             print("Geschwindigkeit bei ({}, {}): {} Meter/Sekunde".format(x, y, speed))
