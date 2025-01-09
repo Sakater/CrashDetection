@@ -58,8 +58,11 @@ def depth_callback(msg):
                         distance_change = current_distance - previous_distance
                         time_change = current_time - previous_time
                         if time_change > 0:
-                            speed = 0 if abs(distance_change / time_change) < 0.5 else abs(distance_change / time_change)
-                            ttc_time = current_distance / speed
+                            speed = 0 if abs(distance_change / time_change) < 0.5 else abs(
+                                distance_change / time_change)
+                            if speed == 0:
+                                ttc_time = 9999
+                            else: ttc_time = current_distance / speed
                             dtc = current_distance
                             # print("Geschwindigkeit bei ({}, {}): {} Meter/Sekunde".format(x, y, speed))
                             if speed >= current_distance:  # notbremsung nötig! => crash in unter 1 Sekunde
@@ -82,6 +85,7 @@ def depth_callback(msg):
     except Exception as e:
         rospy.logerr("Fehler beim Verarbeiten der Tiefendaten: {}".format(e))
 
+
 def safety_brake(ttc, current_speed):
     global pub_motor, pub_motor_fas, motor_fas
     if motor_fas is not None:
@@ -96,6 +100,7 @@ def safety_brake(ttc, current_speed):
         elif ttc == 1:
             pass
 
+
 # Callback-Funktion für das Abonnieren der Lenkungsdaten
 def steering_callback(msg):
     global steering_average, steerings
@@ -104,17 +109,17 @@ def steering_callback(msg):
         if len(steerings) > 10:
             steerings.pop(0)"""
         steering_average = msg.data  # sum(steerings) / len(steerings)
-        #print("Updated steering_average: {}".format(steering_average))
+        # print("Updated steering_average: {}".format(steering_average))
 
 
 def angle_callback():
     """Berechnet linear den Wert des Lenkwinkels im Verhältnis +-90 == 53° Lenkung
     (-) steht für Rechtslenkung, (+) für Linkslenkung"""
     global steering_average, steering_max_left, max_angle
-    #print("steering_average: {}, maxL: {}, maxA: {}".format(steering_average, steering_max_left, max_angle))
+    # print("steering_average: {}, maxL: {}, maxA: {}".format(steering_average, steering_max_left, max_angle))
     vorzeichen = 1 if steering_average > 87 else -1
     angle = (max_angle / abs(steering_max_left - 87) * abs(steering_average - 87) * vorzeichen)
-    #print("Calculated angle: {}".format(angle))
+    # print("Calculated angle: {}".format(angle))
     return angle
 
 
@@ -137,7 +142,7 @@ def calculate_roi_based_on_steering(angle, image_width, image_height, depth_imag
     y_max = y_min + roi_height
 
     # Debug-Ausgabe zur Überprüfung der ROI-Werte
-    #print("ROI: x_min={}, y_min={}, x_max={}, y_max={}, angle={}".format(x_min, y_min, x_max, y_max, angle))
+    # print("ROI: x_min={}, y_min={}, x_max={}, y_max={}, angle={}".format(x_min, y_min, x_max, y_max, angle))
 
     return x_min, y_min, x_max, y_max
 
@@ -161,7 +166,7 @@ def main():
     pub_motor_fas = rospy.Publisher("/ctrlcmd_motorFAS", Int16, queue_size=1)
     pub_motor = rospy.Publisher("/ctrlcmd_motor", Int16, queue_size=1)
 
-    #rospy.Rate(120)  # 120 Hz für die Anzahl der Iterationen der Loop in "while not rospy.is_shutdown()" pro Sekunde
+    # rospy.Rate(120)  # 120 Hz für die Anzahl der Iterationen der Loop in "while not rospy.is_shutdown()" pro Sekunde
     # cv2.namedWindow("ZED2 Image", cv2.WINDOW_NORMAL)
 
     while not rospy.is_shutdown():
@@ -170,8 +175,8 @@ def main():
             image_height, image_width, _ = image.shape
             x_min, y_min, x_max, y_max = calculate_roi_based_on_steering(angle_callback(), image_width,
                                                                          image_height, previous_depth_image)
-            y_min_cv = image_height-y_max
-            y_max_cv = image_height-y_min
+            y_min_cv = image_height - y_max
+            y_max_cv = image_height - y_min
             # Zeichne den ROI auf das Bild
             # cv2.rectangle(image, (x_min, y_min_cv), (x_max, y_max_cv), (0, 255, 0), 2)
 
