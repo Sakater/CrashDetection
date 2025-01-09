@@ -70,6 +70,7 @@ def depth_callback(msg):
                                 ttc = 1
                             safety_brake(ttc, current_speed)
             print("Geschwindigkeit bei ({}, {}): {} Meter/Sekunde".format(x, y, speed))
+            print("motor: {}".format(current_speed))
             print("TTC: {}, DTC: {}".format(ttc, dtc))
             # print("Momentane Distanz: {}".format(current_distance))
             # print("Momentane Lenkung: {}".format(steering_average))
